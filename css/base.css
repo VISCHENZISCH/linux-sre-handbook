@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--serif);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+p {
+  margin-bottom: 20px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── Code blocks ───────────────────────────────── */
+pre {
+  background: var(--term-bg);
+  color: var(--term-text);
+  padding: 0;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 24px 0;
+  border: 1px solid var(--border);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Vercel doesn't use the traffic lights usually, but let's keep a minimal bar */
+pre::before {
+  content: "";
+  display: block;
+  height: 12px;
+  background: #111;
+  border-bottom: 1px solid #333;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+pre>code,
+pre .code-inner {
+  display: block;
+  padding: 20px;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+  border-radius: 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+code {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 0.9em;
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: var(--accent-blue);
+}
+
+/* ── Syntax highlighting ─────────────────────────── */
+.c-keyword {
+  color: #ffa5d2;
+}
+
+.c-string {
+  color: #77e4c8;
+}
+
+.c-comment {
+  color: #888;
+  font-style: italic;
+}
+
+.c-prompt {
+  color: var(--accent-blue);
+  font-weight: bold;
+}
+
+/* ── Tables ────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 0.9rem;
+}
+
+th {
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  font-weight: 500;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:hover td {
+  background: var(--surface-alt);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 60px 0;
+}
+
+/* ── SVG Logos & Icons ──────────────────────────── */
+.header-left svg,
+aside ul li a svg,
+.section-icon svg,
+.server-card-icon svg {
+  color: var(--logo-color) !important;
+  stroke: var(--logo-color) !important;
+}
+
+.header-left svg *,
+aside ul li a svg *,
+.section-icon svg *,
+.server-card-icon svg * {
+  fill: var(--logo-color) !important;
+}
+
+/* Vercel style: Pure black logos, white background inside if needed */
+.header-left svg ellipse,
+.header-left svg circle {
+  fill: var(--logo-color) !important;
+}
+
+.header-left svg circle[fill="#fff"],
+.header-left svg ellipse[fill="#fff"] {
+  fill: #fff !important;
+}
+
+/* ── Back to Top Button ─────────────────────────── */
+#back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 40px;
+  height: 40px;
+  background: var(--back-to-top-bg);
+  color: var(--back-to-top-color);
+  border: 1px solid var(--back-to-top-bg);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+#back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#back-to-top:hover {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--text);
+}

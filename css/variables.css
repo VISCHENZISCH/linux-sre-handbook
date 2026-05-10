@@ -1,0 +1,104 @@
+:root {
+  /* Vercel Style Palette */
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-alt: #fafafa;
+  --border: #eaeaea;
+  --border-dark: #000000;
+  --text: #000000;
+  --text-muted: #666666;
+  --text-light: #888888;
+
+  /* Accent - Vercel is mostly Monochrome */
+  --accent: #000000;
+  --accent-hover: #111111;
+  --accent-blue: #0070f3;
+  /* Vercel's specific blue for links/highlights */
+
+  /* Tag colors (Vercel subtle style) */
+  --blue-bg: #e6f2ff;
+  --blue-text: #0070f3;
+  --blue-border: #0070f3;
+  --red-bg: #fee2e2;
+  --red-text: #ef4444;
+  --red-border: #ef4444;
+  --green-bg: #dcfce7;
+  --green-text: #22c55e;
+  --green-border: #22c55e;
+  --yellow-bg: #fef9c3;
+  --yellow-border: #eab308;
+  --yellow-text: #854d0e;
+  --purple-bg: #f3e8ff;
+  --purple-text: #a855f7;
+  --purple-border: #a855f7;
+  --orange-bg: #ffedd5;
+  --orange-text: #f97316;
+  --orange-border: #f97316;
+  --cyan-bg: #ecfeff;
+  --cyan-text: #06b6d4;
+  --cyan-border: #06b6d4;
+
+  /* Typography */
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Inter', system-ui, sans-serif;
+  --font-ui: 'Inter', system-ui, sans-serif;
+
+  /* Terminal - Vercel/Geist style */
+  --term-bg: #000000;
+  --term-bg-alt: #111111;
+  --term-text: #ffffff;
+  --term-comment: #888888;
+  --term-keyword: #ffa5d2;
+  --term-string: #77e4c8;
+  --term-number: #79c0ff;
+  --term-prompt: #0070f3;
+
+  /* Sizing */
+  --radius: 6px;
+  --radius-lg: 8px;
+  --shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.12);
+
+  /* New UI */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --back-to-top-bg: #000000;
+  --back-to-top-color: #ffffff;
+
+  /* SVG Logo Color */
+  --logo-color: #000000;
+  /* Vercel style: pure black icons */
+}
+
+[data-theme="dark"] {
+  --bg: #000000;
+  --surface: #000000;
+  --surface-alt: #111111;
+  --border: #333333;
+  --border-dark: #444444;
+  --text: #ffffff;
+  --text-muted: #a1a1a1;
+  --text-light: #888888;
+  
+  --accent: #ffffff;
+  --accent-hover: #eeeeee;
+  --accent-blue: #0070f3;
+
+  --blue-bg: rgba(0, 112, 243, 0.15);
+  --blue-text: #3291ff;
+  --red-bg: rgba(255, 0, 0, 0.15);
+  --red-text: #ff0000;
+  --green-bg: rgba(0, 255, 102, 0.15);
+  --green-text: #00ff66;
+
+  --term-bg: #000000;
+  --term-bg-alt: #0a0a0a;
+
+  --glass-bg: rgba(0, 0, 0, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --back-to-top-bg: #ffffff;
+  --back-to-top-color: #000000;
+
+  --logo-color: #ffffff;
+}

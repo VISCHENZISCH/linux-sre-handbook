@@ -1,0 +1,169 @@
+/* ── Progress bar ─────────────────────────────────── */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: #000;
+  z-index: 9999;
+}
+
+/* ── Header ────────────────────────────────────────── */
+header {
+  background: var(--glass-bg);
+  backdrop-filter: saturate(180%) blur(5px);
+  -webkit-backdrop-filter: saturate(180%) blur(5px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.header-left  { display: flex; align-items: center; gap: 12px; }
+.header-title {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+#theme-toggle:hover {
+  background: var(--surface-alt);
+  border-color: var(--text);
+}
+
+#theme-toggle .moon-icon { display: none; }
+[data-theme="dark"] #theme-toggle .sun-icon { display: none; }
+[data-theme="dark"] #theme-toggle .moon-icon { display: block; }
+
+/* Menu Toggle Button (Mobile Only) */
+#menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: -8px;
+  border-radius: 4px;
+  color: #000;
+}
+#menu-toggle:hover { background: #fafafa; }
+
+/* ── Layout ────────────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 240px;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 0;
+}
+
+/* ── Left Sidebar ──────────────────────────────────── */
+aside:not(.right-sidebar) {
+  height: calc(100vh - 64px);
+  position: sticky;
+  top: 64px;
+  padding: 40px 0;
+  background: var(--bg);
+  overflow-y: auto;
+  z-index: 900;
+}
+
+/* ── Main ──────────────────────────────────────────── */
+main {
+  padding: 40px 60px;
+  min-width: 0;
+}
+
+/* ── Right Sidebar ─────────────────────────────────── */
+.right-sidebar {
+  height: calc(100vh - 64px);
+  position: sticky;
+  top: 64px;
+  padding: 40px 0;
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+/* ── Footer ────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 60px 24px;
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  grid-column: 1 / -1;
+}
+
+/* ── Responsive ────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .layout { grid-template-columns: 240px 1fr; }
+  .right-sidebar { display: none; }
+}
+
+@media (max-width: 900px) {
+  #menu-toggle { display: block; }
+  
+  header { padding: 0 16px; }
+
+  .layout { display: block; }
+
+  /* Mobile Drawer Style for Aside */
+  aside:not(.right-sidebar) {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 64px);
+    padding: 20px;
+    border-right: 1px solid var(--border);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 20px 0 50px rgba(0,0,0,0.05);
+    z-index: 2000;
+  }
+
+  body.menu-open aside:not(.right-sidebar) {
+    transform: translateX(0);
+  }
+
+  /* Overlay when menu is open */
+  body.menu-open::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--glass-bg);
+    backdrop-filter: blur(4px);
+    z-index: 1500;
+  }
+
+  main {
+    padding: 30px 20px;
+  }
+
+  .header-title { font-size: 14px; }
+}
