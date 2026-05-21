@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
 *,
 *::before,
@@ -20,11 +20,11 @@ html {
 }
 
 body {
-  font-family: var(--serif);
+  font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
-  font-size: 14px;
+  line-height: 1.5;
+  font-size: 15px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -34,36 +34,146 @@ p {
   line-height: 1.6;
 }
 
+/* ── Typography Display - Cursor Style ── */
+.display-mega {
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -2.16px;
+}
+
+.display-lg {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.72px;
+}
+
+.display-md {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.325px;
+}
+
+.display-sm {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.11px;
+}
+
+.title-md {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.title-sm {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.body-md {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.body-tracked {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.08px;
+}
+
+.body-sm {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.caption {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.caption-uppercase {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.88px;
+  text-transform: uppercase;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
 /* ── Code blocks ───────────────────────────────── */
 pre {
   background: var(--term-bg);
   color: var(--term-text);
   padding: 0;
-  border-radius: var(--radius);
-  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
   font-family: var(--mono);
-  font-size: 0.85rem;
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1.5;
   margin: 24px 0;
   border: 1px solid var(--border);
   max-width: 100%;
   box-sizing: border-box;
+  position: relative;
 }
 
-/* Vercel doesn't use the traffic lights usually, but let's keep a minimal bar */
+/* Tab indicator showing code block theme */
 pre::before {
-  content: "";
+  content: "Shell Session";
   display: block;
-  height: 12px;
-  background: #111;
-  border-bottom: 1px solid #333;
-  border-radius: var(--radius) var(--radius) 0 0;
+  height: 32px;
+  line-height: 32px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-light);
+  background: var(--term-bg-alt);
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.08px;
 }
 
-pre>code,
+/* Customize tab titles for specific languages if declared in class */
+pre.yaml::before { content: "Kubernetes YAML"; }
+pre.python::before { content: "Python Script"; }
+pre.shell::before { content: "Terminal Session"; }
+pre.service::before { content: "systemd unit config"; }
+pre.ssh::before { content: "ssh server config"; }
+pre.sysctl::before { content: "sysctl configuration"; }
+
+pre > code,
 pre .code-inner {
   display: block;
-  padding: 20px;
+  padding: 16px 20px;
   background: none;
   color: inherit;
   font-size: inherit;
@@ -76,29 +186,35 @@ code {
   background: var(--surface-alt);
   border: 1px solid var(--border);
   font-family: var(--mono);
-  font-size: 0.9em;
-  padding: 2px 5px;
-  border-radius: 4px;
-  color: var(--accent-blue);
+  font-size: 13px;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  color: var(--text);
+  font-weight: 400;
 }
 
 /* ── Syntax highlighting ─────────────────────────── */
 .c-keyword {
-  color: #ffa5d2;
+  color: var(--term-keyword);
+  font-weight: 500;
 }
 
 .c-string {
-  color: #77e4c8;
+  color: var(--term-string);
 }
 
 .c-comment {
-  color: #888;
+  color: var(--term-comment);
   font-style: italic;
 }
 
 .c-prompt {
-  color: var(--accent-blue);
-  font-weight: bold;
+  color: var(--term-prompt);
+  user-select: none;
+}
+
+.c-number {
+  color: var(--term-number);
 }
 
 /* ── Tables ────────────────────────────────────────── */
@@ -106,35 +222,42 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin: 24px 0;
-  font-size: 0.9rem;
+  font-size: 14px;
 }
 
 th {
   background: var(--surface-alt);
-  color: var(--text-muted);
-  font-weight: 500;
-  padding: 12px;
+  color: var(--text);
+  font-weight: 600;
+  padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-dark);
+  font-size: 13px;
 }
 
 td {
-  padding: 12px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--border);
-  vertical-align: top;
+  vertical-align: middle;
+  color: var(--text-muted);
 }
 
 tr:hover td {
   background: var(--surface-alt);
+  color: var(--text);
 }
 
 hr {
   border: none;
   border-top: 1px solid var(--border);
-  margin: 60px 0;
+  margin: 64px 0;
 }
 
 /* ── SVG Logos & Icons ──────────────────────────── */
+svg {
+  flex-shrink: 0;
+}
+
 .header-left svg,
 aside ul li a svg,
 .section-icon svg,
@@ -150,36 +273,29 @@ aside ul li a svg *,
   fill: var(--logo-color) !important;
 }
 
-/* Vercel style: Pure black logos, white background inside if needed */
-.header-left svg ellipse,
-.header-left svg circle {
-  fill: var(--logo-color) !important;
-}
-
 .header-left svg circle[fill="#fff"],
 .header-left svg ellipse[fill="#fff"] {
-  fill: #fff !important;
+  fill: var(--canvas) !important;
 }
 
 /* ── Back to Top Button ─────────────────────────── */
 #back-to-top {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 24px;
+  right: 24px;
   width: 40px;
   height: 40px;
   background: var(--back-to-top-bg);
   color: var(--back-to-top-color);
   border: 1px solid var(--back-to-top-bg);
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1000;
 }
 
@@ -189,7 +305,7 @@ aside ul li a svg *,
 }
 
 #back-to-top:hover {
-  background: var(--bg);
-  color: var(--text);
-  border-color: var(--text);
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
 }

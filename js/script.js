@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Close menu when clicking links or overlay
+  // Close menu when clicking links
   navLinks.forEach(link => {
     link.addEventListener('click', () => {
       body.classList.remove('menu-open');
@@ -79,9 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show/Hide back to top button
     if (winScroll > 400) {
-      backToTopBtn.classList.add('visible');
+      if (backToTopBtn) backToTopBtn.classList.add('visible');
     } else {
-      backToTopBtn.classList.remove('visible');
+      if (backToTopBtn) backToTopBtn.classList.remove('visible');
     }
   };
 
@@ -89,16 +89,21 @@ document.addEventListener('DOMContentLoaded', () => {
   highlightSection();
 
   // Smooth scroll to top
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
-  });
+  }
 
   // Enhanced Copy button for code blocks
   const preBlocks = document.querySelectorAll('pre');
   preBlocks.forEach(pre => {
+    // Avoid copying copy button itself or applying to mockup console
+    if (pre.closest('.cursor-agent-container')) return;
+    
     const code = pre.querySelector('code');
     if (!code) return;
 
@@ -139,4 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
     section.classList.add('fade-in-section');
     observer.observe(section);
   });
+
+
 });

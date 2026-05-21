@@ -4,17 +4,17 @@
   top: 0; left: 0;
   height: 2px;
   width: 0%;
-  background: #000;
+  background: var(--primary);
   z-index: 9999;
 }
 
 /* ── Header ────────────────────────────────────────── */
 header {
   background: var(--glass-bg);
-  backdrop-filter: saturate(180%) blur(5px);
-  -webkit-backdrop-filter: saturate(180%) blur(5px);
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
   border-bottom: 1px solid var(--border);
-  padding: 0 24px;
+  padding: 0 var(--space-lg);
   height: 64px;
   display: flex;
   align-items: center;
@@ -25,24 +25,64 @@ header {
   width: 100%;
 }
 
-.header-left  { display: flex; align-items: center; gap: 12px; }
-.header-title {
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: -0.02em;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  text-decoration: none;
+}
+
+.header-logo-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.header-logo-text span {
+  color: var(--primary);
+}
+
+/* Header navigation links for Cursor layout */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  list-style: none;
+}
+
+.header-nav a {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.header-nav a:hover,
+.header-nav a.active {
+  color: var(--text);
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-base);
 }
 
 #theme-toggle {
   background: none;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 6px;
+  border-radius: var(--radius-sm);
+  padding: 8px;
   cursor: pointer;
   color: var(--text);
   display: flex;
@@ -53,7 +93,7 @@ header {
 
 #theme-toggle:hover {
   background: var(--surface-alt);
-  border-color: var(--text);
+  border-color: var(--text-light);
 }
 
 #theme-toggle .moon-icon { display: none; }
@@ -67,103 +107,137 @@ header {
   border: none;
   cursor: pointer;
   padding: 8px;
-  margin-left: -8px;
-  border-radius: 4px;
-  color: #000;
+  color: var(--text);
+  border-radius: var(--radius-xs);
 }
-#menu-toggle:hover { background: #fafafa; }
+#menu-toggle:hover { background: var(--surface-alt); }
 
-/* ── Layout ────────────────────────────────────────── */
+/* ── Layout Grid ───────────────────────────────────── */
 .layout {
   display: grid;
-  grid-template-columns: 240px 1fr 240px;
-  max-width: 1400px;
+  grid-template-columns: 260px 1fr 260px;
+  max-width: 1360px;
   margin: 0 auto;
   gap: 0;
+  padding: 0 var(--space-lg);
 }
 
-/* ── Left Sidebar ──────────────────────────────────── */
+/* ── Sidebar Panels ────────────────────────────────── */
 aside:not(.right-sidebar) {
   height: calc(100vh - 64px);
   position: sticky;
   top: 64px;
-  padding: 40px 0;
+  padding: var(--space-xl) var(--space-base) var(--space-xl) 0;
   background: var(--bg);
   overflow-y: auto;
+  border-right: 1px solid var(--border-dark);
   z-index: 900;
 }
 
-/* ── Main ──────────────────────────────────────────── */
-main {
-  padding: 40px 60px;
-  min-width: 0;
-}
-
-/* ── Right Sidebar ─────────────────────────────────── */
 .right-sidebar {
   height: calc(100vh - 64px);
   position: sticky;
   top: 64px;
-  padding: 40px 0;
+  padding: var(--space-xl) 0 var(--space-xl) var(--space-base);
   background: var(--bg);
   overflow-y: auto;
+  border-left: 1px solid var(--border-dark);
+}
+
+/* ── Main Content Area ─────────────────────────────── */
+main {
+  padding: var(--space-xl) var(--space-xxl);
+  min-width: 0;
+}
+
+main section {
+  padding: var(--space-section) 0;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+main section:last-of-type {
+  border-bottom: none;
 }
 
 /* ── Footer ────────────────────────────────────────── */
 footer {
   border-top: 1px solid var(--border);
-  padding: 60px 24px;
+  padding: var(--space-xxl) var(--space-lg);
   text-align: center;
-  color: #888;
+  color: var(--text-muted);
   font-size: 13px;
   grid-column: 1 / -1;
+  background: var(--canvas-soft);
 }
 
-/* ── Responsive ────────────────────────────────────── */
+/* ── Mobile First Responsive Strategy ──────────────── */
 @media (max-width: 1200px) {
-  .layout { grid-template-columns: 240px 1fr; }
-  .right-sidebar { display: none; }
+  .layout {
+    grid-template-columns: 240px 1fr;
+  }
+  .right-sidebar {
+    display: none;
+  }
 }
 
 @media (max-width: 900px) {
-  #menu-toggle { display: block; }
+  #menu-toggle {
+    display: block;
+  }
   
-  header { padding: 0 16px; }
+  .header-nav {
+    display: none; /* Hide top nav links, they go inside mobile drawer */
+  }
 
-  .layout { display: block; }
+  header {
+    padding: 0 var(--space-base);
+  }
 
-  /* Mobile Drawer Style for Aside */
+  .layout {
+    display: block;
+    padding: 0;
+  }
+
+  /* Drawer Menu Overlay for Left Sidebar */
   aside:not(.right-sidebar) {
     position: fixed;
     top: 64px;
     left: 0;
-    width: 280px;
+    width: 290px;
     height: calc(100vh - 64px);
-    padding: 20px;
+    padding: var(--space-base) var(--space-lg);
+    background: var(--bg);
     border-right: 1px solid var(--border);
     transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 20px 0 50px rgba(0,0,0,0.05);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 2000;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.04);
   }
 
   body.menu-open aside:not(.right-sidebar) {
     transform: translateX(0);
   }
 
-  /* Overlay when menu is open */
+  /* Background Blur when drawer is active */
   body.menu-open::after {
     content: "";
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--glass-bg);
+    top: 64px; left: 0; right: 0; bottom: 0;
+    background: rgba(38, 37, 30, 0.15);
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 1500;
   }
 
   main {
-    padding: 30px 20px;
+    padding: var(--space-base) var(--space-base) var(--space-xxl);
   }
 
-  .header-title { font-size: 14px; }
+  main section {
+    padding: var(--space-xxl) 0;
+  }
+  
+  .header-logo-text {
+    font-size: 15px;
+  }
 }
