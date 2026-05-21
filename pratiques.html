@@ -4,9 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Introduction &amp; Guide - Administration Serveur Linux</title>
-  <meta name="description"
-    content="Guide complet d'administration serveur Linux : types de serveurs, maintenance, sécurité, DevOps, Kubernetes, SRE, nouvelles pratiques.">
+  <title>Nouvelles Pratiques - Administration Serveur Linux</title>
+  <meta name="description" content="Guide des nouvelles pratiques DevOps et SRE : budgets d'erreurs, GitOps ArgoCD, DevSecOps shift-left, Platform Engineering IDP, FinOps et piliers d'observabilité.">
   <link rel="stylesheet" href="css/main.css">
   <script src="js/script.js" defer></script>
 </head>
@@ -38,7 +37,7 @@
     </div>
 
     <ul class="header-nav">
-      <li><a href="index.html#purpose" class="active">Objectif</a></li>
+      <li><a href="index.html#purpose">Objectif</a></li>
       <li><a href="index.html#server-types">Serveurs</a></li>
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview">Quiz</a></li>
@@ -280,10 +279,10 @@
     <!-- ══ MAIN CONTENT ══ -->
     <main>
 
-      <div class="breadcrumb">Docs <span>›</span> Guides <span>›</span> Introduction</div>
-      <h1 class="display-mega">Introduction &amp; Concepts</h1>
+      <div class="breadcrumb">Docs <span>›</span> Pratiques <span>›</span> DevOps &amp; SRE</div>
+      <h1 class="display-mega">Nouvelles Pratiques</h1>
       <p class="subtitle" style="font-size: 18px; margin-bottom: 24px;">
-        Objectifs et fondations indispensables pour appréhender l'administration système moderne et la philosophie SRE.
+        Méthodologies modernes de gestion d'infrastructures à l'échelle : SRE, GitOps, DevSecOps et Observabilité.
       </p>
 
       <div class="page-meta" style="margin-bottom: 40px;">
@@ -292,197 +291,208 @@
             <circle cx="8" cy="8" r="6" />
             <path d="M8 4.5V8l2.5 1.5" stroke-linecap="round" />
           </svg>
-          ~7 min de lecture
+          ~15 min de lecture
         </span>
         <span class="page-meta-item">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
             <path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4z" />
           </svg>
-          Fondamentaux
+          Méthodologie DevOps
         </span>
         <span class="page-meta-item"><span class="badge">Mis à jour Mai 2026</span></span>
       </div>
 
       <div class="page-banner-container">
-        <img src="img/index_hero.jpg" alt="Administration Serveur Linux - Introduction" class="page-banner">
+        <img src="img/pratiques_hero.jpg" alt="Administration Serveur Linux - Nouvelles Pratiques" class="page-banner">
       </div>
 
-      <!-- ══════════ SECTION: OBJECTIF ══════════ -->
-      <section id="purpose">
+      <!-- ══════════ SECTION: SRE ══════════ -->
+      <section id="sre">
         <div class="section-header">
-          <div class="section-icon">
+          <div class="section-icon green">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
               stroke-linecap="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 8v4M12 16h.01" />
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22,4 12,14.01 9,11.01" />
             </svg>
           </div>
-          <h2>Objectif général</h2>
+          <h2>SRE &amp; Fiabilité</h2>
         </div>
-        <p>Ce guide couvre l'intégralité du cycle de vie d'un serveur Linux : de son identification à sa mise en
-          production, en passant par la maintenance quotidienne, la gestion technique et les pratiques DevOps modernes.
-        <div class="note info">
-          Les commandes sont divisées en catégories :<br><br>
-          <span class="tag tag-blue">Bleu</span> — La <strong>finalité du serveur</strong> : ports exposés et services
-          actifs.<br>
-          <span class="tag tag-red">Rouge</span> — Le <strong>niveau de saturation</strong> des ressources
-          matérielles.<br>
-          <span class="tag tag-green">Vert</span> — Les <strong>erreurs potentielles</strong> et événements critiques.
+        <p>L'ingénierie de fiabilité des sites (SRE) applique l'ingénierie logicielle aux opérations.</p>
+        <div class="two-col">
+          <div class="card">
+            <h4>SLI &amp; SLO</h4>
+            <p><strong>SLI (Indicator)</strong> : Métrique brute (ex: % de requêtes HTTP en &lt; 200ms).<br><strong>SLO
+                (Objective)</strong> : Cible de fiabilité (ex: 99.9% de requêtes conformes au SLI).</p>
+          </div>
+          <div class="card">
+            <h4>Budget d'Erreur (Error Budget)</h4>
+            <p>La marge d'indisponibilité tolérée (100% - SLO). Utilisée pour arbitrer entre vitesse de déploiement et
+              fiabilité.</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 24px; border-left: 3px solid var(--accent);">
+          <h4>🧮 Méthode de Calcul du Budget d'Erreur (Error Budget)</h4>
+          <p style="font-size: 13.5px; margin-top: 8px;">Le budget d'erreur se calcule directement selon la formule suivante :</p>
+          <pre style="background: rgba(var(--primary-rgb), 0.05); padding: 12px; border-radius: 6px; margin: 10px 0; font-family: monospace; font-size: 14px; text-align: center;"><strong>Budget d'Erreur = 100% - SLO</strong></pre>
+          
+          <div class="two-col" style="gap: 16px; margin-top: 16px;">
+            <div style="background: rgba(255,255,255,0.02); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+              <h5 style="color: var(--primary); font-size: 14px; margin-bottom: 8px;">1. Approche par Requêtes (Recommandée)</h5>
+              <p style="font-size: 13px; line-height: 1.5;">
+                Préférée pour les services hautement distribués. On calcule le pourcentage de requêtes autorisées à échouer.<br><br>
+                <strong>Exemple :</strong><br>
+                • <strong>SLO Target :</strong> 99.9% de succès<br>
+                • <strong>Budget :</strong> 0.1% d'erreurs tolérées<br>
+                • <strong>Volume mensuel :</strong> 1 000 000 requêtes<br>
+                • <strong>Calcul :</strong> 1 000 000 × 0.001 = <strong style="color: var(--accent);">1 000 requêtes en échec tolérées</strong>.<br>
+                <em>Au-delà de 1 000 échecs dans le mois, le budget est épuisé et les déploiements de fonctionnalités sont gelés.</em>
+              </p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.02); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+              <h5 style="color: var(--primary); font-size: 14px; margin-bottom: 8px;">2. Approche par Temps d'Indisponibilité</h5>
+              <p style="font-size: 13px; line-height: 1.5;">
+                Idéale pour les services d'infrastructure monolithiques ou réseaux. On calcule la durée totale d'interruption acceptable.<br><br>
+                <strong>Exemple :</strong><br>
+                • <strong>SLO Target :</strong> 99.95% de disponibilité mensuelle<br>
+                • <strong>Budget :</strong> 0.05% d'indisponibilité tolérée<br>
+                • <strong>Temps mensuel :</strong> 30 jours (43 200 minutes)<br>
+                • <strong>Calcul :</strong> 43 200 × 0.0005 = <strong style="color: var(--accent);">21.6 minutes d'indisponibilité max</strong>.<br>
+                <em>Si le service subit plus de 21 minutes et 36 secondes de panne sur 30 jours glissants, l'alerte rouge est déclenchée.</em>
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- ══════════ SECTION: TYPES DE SERVEURS ══════════ -->
-      <section id="server-types">
+      <!-- ══════════ SECTION: GITOPS ══════════ -->
+      <section id="gitops">
+        <div class="section-header">
+          <div class="section-icon purple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <circle cx="18" cy="18" r="3" />
+              <circle cx="6" cy="6" r="3" />
+              <path d="M13 6h3a2 2 0 012 2v7M6 9v9" />
+            </svg>
+          </div>
+          <h2>GitOps &amp; CI/CD</h2>
+        </div>
+        <p>Git est l'unique source de vérité pour l'infrastructure déclarative.</p>
+        <div class="arch-box">
+          Code Push ➜ Git Repository ➜ ArgoCD Operator ➜ Kubernetes Auto-Sync
+        </div>
+        <div class="note info">
+          <strong>Principe Clé</strong> : Réconciliation continue automatique entre l'état décrit dans Git et l'état
+          réel de l'infrastructure.
+        </div>
+      </section>
+
+      <!-- ══════════ SECTION: DEVSECOPS ══════════ -->
+      <section id="devsecops">
+        <div class="section-header">
+          <div class="section-icon red">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <h2>DevSecOps</h2>
+        </div>
+        <p>Intégrer la sécurité dès les premières étapes du cycle de développement (Shift Left).</p>
+        <div class="maint-grid">
+          <div class="maint-card">
+            <h4>SAST</h4>
+            <p style="font-size: 13px;">Analyse statique du code source à la recherche de failles de sécurité avant le build.</p>
+          </div>
+          <div class="maint-card">
+            <h4>SCA</h4>
+            <p style="font-size: 13px;">Scan des dépendances open-source à la recherche de CVE connues (ex: Trivy).</p>
+          </div>
+          <div class="maint-card">
+            <h4>DAST</h4>
+            <p style="font-size: 13px;">Test de pénétration automatisé sur l'environnement de staging actif.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ SECTION: PLATFORM ══════════ -->
+      <section id="platform">
+        <div class="section-header">
+          <div class="section-icon orange">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <rect x="3" y="3" width="7" height="9" />
+              <rect x="14" y="3" width="7" height="5" />
+              <rect x="14" y="12" width="7" height="9" />
+              <rect x="3" y="16" width="7" height="5" />
+            </svg>
+          </div>
+          <h2>Platform Engineering</h2>
+        </div>
+        <p>Création d'un portail interne des développeurs (IDP) pour autonomiser les équipes produit.</p>
+        <div class="card">
+          <h4>Golden Paths (Chemins pavés)</h4>
+          <p>Fournir des templates prêts à l'emploi (bases de données, microservices) entièrement configurés avec les
+            normes de l'entreprise.</p>
+        </div>
+      </section>
+
+      <!-- ══════════ SECTION: FINOPS ══════════ -->
+      <section id="finops">
+        <div class="section-header">
+          <div class="section-icon blue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <line x1="12" y1="1" x2="12" y2="23" />
+              <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+            </svg>
+          </div>
+          <h2>FinOps</h2>
+        </div>
+        <p>Optimisation continue des coûts cloud sans sacrifier les performances.</p>
+        <ul style="margin-left: 20px;">
+          <li><strong>Right-sizing</strong> : Ajuster la taille des instances CPU/RAM aux besoins réels.</li>
+          <li><strong>Gestion des ressources orphelines</strong> : Disques non attachés, adresses IP flottantes non utilisées.</li>
+          <li><strong>Instances Spot</strong> : Utilisation de serveurs éphémères remisés jusqu'à 90%.</li>
+        </ul>
+      </section>
+
+      <!-- ══════════ SECTION: OBSERVABILITY ══════════ -->
+      <section id="observability">
         <div class="section-header">
           <div class="section-icon cyan">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
               stroke-linecap="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" />
-              <line x1="2" y1="10" x2="22" y2="10" />
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              <line x1="11" y1="8" x2="11" y2="14" />
+              <line x1="8" y1="11" x2="14" y2="11" />
             </svg>
           </div>
-          <h2>Types de serveurs Linux</h2>
+          <h2>Observabilité avancée</h2>
         </div>
-        <p>Un serveur Linux peut remplir une multitude de rôles. Voici les typologies les plus courantes rencontrées en
-          entreprise et en infrastructure cloud.</p>
-
-        <div class="server-grid">
-          <div class="server-card web">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-            </div>
-            <h4>Serveur Web <span class="sc-port">80, 443</span></h4>
-            <p>Héberge des sites et applications. Utilise Nginx, Apache ou LiteSpeed. Souvent le point d'entrée
-              principal du trafic.</p>
-            <div class="sc-tags">
-              <span class="tag tag-blue">Nginx</span>
-              <span class="tag tag-blue">Apache</span>
-            </div>
+        <p>Aller au-delà du simple monitoring traditionnel en comprenant le comportement interne du système complexe.</p>
+        <div class="two-col">
+          <div class="card">
+            <h4>Les 3 piliers</h4>
+            <p><strong>Métriques</strong> (données agrégées) ➜ <strong>Logs</strong> (événements contextualisés) ➜ <strong>Traces</strong> (cheminement des requêtes distribuées).</p>
           </div>
-
-          <div class="server-card db">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <ellipse cx="12" cy="5" rx="9" ry="3" />
-                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-              </svg>
-            </div>
-            <h4>Base de Données <span class="sc-port">5432, 3306</span></h4>
-            <p>Stocke et gère les données structurées. Critique pour les performances applicatives. Nécessite un tuning
-              kernel spécifique.</p>
-            <div class="sc-tags">
-              <span class="tag tag-purple">PostgreSQL</span>
-              <span class="tag tag-purple">MariaDB</span>
-            </div>
-          </div>
-
-          <div class="server-card proxy">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            </div>
-            <h4>Reverse Proxy / LB <span class="sc-port">80, 443</span></h4>
-            <p>Répartit la charge entre plusieurs serveurs backend et gère la terminaison SSL/TLS.</p>
-            <div class="sc-tags">
-              <span class="tag tag-purple">HAProxy</span>
-              <span class="tag tag-purple">Traefik</span>
-            </div>
-          </div>
-
-          <div class="server-card file">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-              </svg>
-            </div>
-            <h4>Serveur de Fichiers <span class="sc-port">2049, 445</span></h4>
-            <p>Partage de ressources de stockage sur le réseau local ou étendu. Utilise NFS ou Samba (SMB/CIFS).</p>
-            <div class="sc-tags">
-              <span class="tag tag-green">NFS</span>
-              <span class="tag tag-green">Samba</span>
-            </div>
-          </div>
-
-          <div class="server-card dns">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </div>
-            <h4>Serveur DNS <span class="sc-port">53</span></h4>
-            <p>Résolution de noms de domaine en adresses IP. Élément fondamental de toute infrastructure réseau.</p>
-            <div class="sc-tags">
-              <span class="tag tag-cyan">BIND9</span>
-              <span class="tag tag-cyan">Unbound</span>
-            </div>
-          </div>
-
-          <div class="server-card mail">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-            </div>
-            <h4>Serveur Mail <span class="sc-port">25, 587, 993</span></h4>
-            <p>Gère l'envoi (SMTP) et la réception (IMAP/POP3) de courriels. Requiert une configuration antispam
-              rigoureuse.</p>
-            <div class="sc-tags">
-              <span class="tag tag-orange">Postfix</span>
-              <span class="tag tag-orange">Dovecot</span>
-            </div>
+          <div class="card">
+            <h4>APM &amp; Profiling en continu</h4>
+            <p>Analyse des performances du code en production à faible surcharge (ex: Pyroscope, eBPF).</p>
           </div>
         </div>
-      </section>
 
-      <!-- ══════════ SECTION: INTRODUCTION SRE ══════════ -->
-      <section id="sre-intro">
-        <div class="section-header">
-          <div class="section-icon green">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              <path d="M9 11l3 3 5-5" />
-            </svg>
-          </div>
-          <h2>Ingénierie de Fiabilité (SRE)</h2>
-        </div>
-        <p>
-          L'ingénierie de fiabilité des sites (Site Reliability Engineering ou SRE) est une discipline qui intègre des aspects de l'ingénierie logicielle et les applique aux problèmes d'exploitation des infrastructures.
-        </p>
-        <p>
-          Fondée chez Google par Ben Treynor Sloss, la philosophie SRE repose sur un principe clé : <strong>« SRE is what happens when you ask a software engineer to design an operations function. »</strong> (Le SRE est ce qui se passe quand vous demandez à un ingénieur logiciel de concevoir une fonction d'exploitation).
-        </p>
-        <div class="card" style="margin-top: 20px;">
-          <h4>Les 3 principes d'or du SRE sur Linux</h4>
-          <ul style="margin-left: 20px; margin-top: 10px;">
-            <li><strong>L'automatisation outrancière :</strong> Si une tâche manuelle est répétée plus de trois fois, elle doit être automatisée par un script Bash, un playbook Ansible, ou intégrée dans un control plane.</li>
-            <li><strong>La culture du blameless post-mortem :</strong> Les pannes matérielles ou logicielles sont inévitables. L'analyse d'incident doit être orientée vers la résilience du système, sans jamais chercher de coupable humain.</li>
-            <li><strong>La gestion par budgets d'erreur :</strong> Le compromis entre vitesse d'innovation et stabilité système est arbitré scientifiquement par les indicateurs SLI, SLO et budgets d'erreurs associés.</li>
-          </ul>
-        </div>
-
-        <div class="card" style="margin-top: 20px; border-left: 3px solid var(--primary);">
-          <h4 style="display: flex; align-items: center; gap: 8px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); flex-shrink: 0;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-            Lectures de Référence Recommandées
-          </h4>
+        <div class="card" style="margin-top: 24px; border-left: 3px solid var(--primary);">
+          <h4>🔄 Références DevOps, GitOps &amp; DevSecOps</h4>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><strong>Site Reliability Engineering (Google)</strong> — <em>Betsy Beyer et al.</em> — Référence absolue du SRE. <a href="https://sre.google/sre-book/table-of-contents" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Consulter en ligne (Gratuit)</a></li>
-            <li style="margin-bottom: 8px;"><strong>UNIX and Linux System Administration Handbook</strong> — <em>Nemeth et al.</em> — La bible indispensable pour tout administrateur Linux.</li>
-            <li style="margin-bottom: 8px;"><strong>The Linux Command Line</strong> — <em>William Shotts</em> — Le guide de référence pour maîtriser le shell. <a href="http://linuxcommand.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Site officiel</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://argo-cd.readthedocs.io/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">ArgoCD Docs</a> &amp; <a href="https://fluxcd.io/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">FluxCD</a> — Outils leaders de réconciliation GitOps continue.</li>
+            <li style="margin-bottom: 8px;"><a href="https://slsa.dev/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">SLSA Framework</a> — Normes de sécurité de la chaîne d'approvisionnement logicielle (Software Supply Chain).</li>
+            <li style="margin-bottom: 8px;"><a href="https://github.com/aquasecurity/trivy" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Trivy (AquaSecurity)</a> — Outil de référence pour scanner les CVE dans les images de conteneurs et fichiers IaC.</li>
+            <li style="margin-bottom: 8px;"><a href="https://www.finops.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">FinOps Foundation</a> — Cadres et bonnes pratiques mondiales pour la gestion des coûts cloud.</li>
           </ul>
         </div>
       </section>
@@ -494,17 +504,20 @@
       <div class="toc-group">
         <span class="toc-label">Sur cette page</span>
         <ul id="on-this-page">
-          <li><a href="#purpose" class="active">Objectif général</a></li>
-          <li><a href="#server-types">Types de serveurs</a></li>
-          <li><a href="#sre-intro">Introduction SRE</a></li>
+          <li><a href="#sre">SRE &amp; Fiabilité</a></li>
+          <li><a href="#gitops">GitOps &amp; CI/CD</a></li>
+          <li><a href="#devsecops">DevSecOps</a></li>
+          <li><a href="#platform">Platform Eng.</a></li>
+          <li><a href="#finops">FinOps</a></li>
+          <li><a href="#observability">Observabilité</a></li>
         </ul>
       </div>
       <div class="toc-group">
         <span class="toc-label">Statut du Guide</span>
         <div class="status-card">
           <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~7 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Fondamentaux</span></div>
+          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~15 min</span></div>
+          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">DevOps / SRE</span></div>
           <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
         </div>
       </div>

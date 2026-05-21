@@ -4,9 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Introduction &amp; Guide - Administration Serveur Linux</title>
-  <meta name="description"
-    content="Guide complet d'administration serveur Linux : types de serveurs, maintenance, sécurité, DevOps, Kubernetes, SRE, nouvelles pratiques.">
+  <title>Administration Avancée - Administration Serveur Linux</title>
+  <meta name="description" content="Guide d'administration serveur Linux avancée : durcissement de sécurité SSH, UFW, gestion des paquets, systemd sandboxing, réseau TCP, stockage LVM, et monitoring.">
   <link rel="stylesheet" href="css/main.css">
   <script src="js/script.js" defer></script>
 </head>
@@ -38,7 +37,7 @@
     </div>
 
     <ul class="header-nav">
-      <li><a href="index.html#purpose" class="active">Objectif</a></li>
+      <li><a href="index.html#purpose">Objectif</a></li>
       <li><a href="index.html#server-types">Serveurs</a></li>
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview">Quiz</a></li>
@@ -280,10 +279,10 @@
     <!-- ══ MAIN CONTENT ══ -->
     <main>
 
-      <div class="breadcrumb">Docs <span>›</span> Guides <span>›</span> Introduction</div>
-      <h1 class="display-mega">Introduction &amp; Concepts</h1>
+      <div class="breadcrumb">Docs <span>›</span> Administration <span>›</span> Avancée</div>
+      <h1 class="display-mega">Administration Avancée</h1>
       <p class="subtitle" style="font-size: 18px; margin-bottom: 24px;">
-        Objectifs et fondations indispensables pour appréhender l'administration système moderne et la philosophie SRE.
+        Optimisation, durcissement et maîtrise des mécanismes bas niveau du système d'exploitation Linux.
       </p>
 
       <div class="page-meta" style="margin-bottom: 40px;">
@@ -292,197 +291,201 @@
             <circle cx="8" cy="8" r="6" />
             <path d="M8 4.5V8l2.5 1.5" stroke-linecap="round" />
           </svg>
-          ~7 min de lecture
+          ~15 min de lecture
         </span>
         <span class="page-meta-item">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
             <path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4z" />
           </svg>
-          Fondamentaux
+          SRE / Ingénierie
         </span>
         <span class="page-meta-item"><span class="badge">Mis à jour Mai 2026</span></span>
       </div>
 
       <div class="page-banner-container">
-        <img src="img/index_hero.jpg" alt="Administration Serveur Linux - Introduction" class="page-banner">
+        <img src="img/admin_hero.jpg" alt="Administration Serveur Linux - Administration Avancée" class="page-banner">
       </div>
 
-      <!-- ══════════ SECTION: OBJECTIF ══════════ -->
-      <section id="purpose">
+      <!-- ══════════ SECTION: SÉCURITÉ ══════════ -->
+      <section id="sec">
         <div class="section-header">
-          <div class="section-icon">
+          <div class="section-icon red">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
               stroke-linecap="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 8v4M12 16h.01" />
+              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25 5.25-1.1 9-6 9-11.25V7l-9-5z" />
             </svg>
           </div>
-          <h2>Objectif général</h2>
+          <h2>Sécurité &amp; Hardening</h2>
         </div>
-        <p>Ce guide couvre l'intégralité du cycle de vie d'un serveur Linux : de son identification à sa mise en
-          production, en passant par la maintenance quotidienne, la gestion technique et les pratiques DevOps modernes.
-        <div class="note info">
-          Les commandes sont divisées en catégories :<br><br>
-          <span class="tag tag-blue">Bleu</span> — La <strong>finalité du serveur</strong> : ports exposés et services
-          actifs.<br>
-          <span class="tag tag-red">Rouge</span> — Le <strong>niveau de saturation</strong> des ressources
-          matérielles.<br>
-          <span class="tag tag-green">Vert</span> — Les <strong>erreurs potentielles</strong> et événements critiques.
+        <p>Réduire la surface d'attaque par le durcissement système et applicatif.</p>
+
+        <h3>SSH Hardening</h3>
+        <pre class="ssh"><code><span class="c-comment"># /etc/ssh/sshd_config</span>
+PermitRootLogin <span class="c-red">no</span>
+PasswordAuthentication <span class="c-red">no</span>
+Port <span class="c-number">2222</span>
+AllowUsers <span class="c-string">deployer admin</span></code></pre>
+
+        <div class="two-col">
+          <div class="card">
+            <h4>Firewall (UFW)</h4>
+            <pre><code><span class="c-prompt">#</span> ufw default deny incoming
+<span class="c-prompt">#</span> ufw allow 2222/tcp
+<span class="c-prompt">#</span> ufw allow 80,443/tcp
+<span class="c-prompt">#</span> ufw enable</code></pre>
+          </div>
+          <div class="card">
+            <h4>Fail2Ban</h4>
+            <pre><code><span class="c-prompt">#</span> apt install fail2ban
+<span class="c-comment"># Protection contre le brute force</span>
+<span class="c-prompt">#</span> fail2ban-client status sshd</code></pre>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 24px; border-left: 3px solid var(--primary);">
+          <h4 style="display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); flex-shrink: 0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Standards &amp; Outils de Hardening
+          </h4>
+          <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
+            <li style="margin-bottom: 8px;"><a href="https://www.cisecurity.org/cis-benchmarks" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">CIS Benchmarks</a> — Normes de durcissement universelles reconnues par l'industrie (Linux, K8s, Cloud).</li>
+            <li style="margin-bottom: 8px;"><a href="https://cisofy.com/lynis/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Lynis Audit Tool</a> — Outil open source d'audit de sécurité et de durcissement Linux.</li>
+            <li style="margin-bottom: 8px;"><a href="https://madaidans-insecurities.github.io/guides/linux-hardening.html" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Linux Hardening Guide</a> — Guide technique complet sur la protection du noyau.</li>
+            <li style="margin-bottom: 8px;"><strong>NIST SP 800-123</strong> — Recommandations fédérales américaines pour la sécurité des serveurs généraux.</li>
+          </ul>
         </div>
       </section>
 
-      <!-- ══════════ SECTION: TYPES DE SERVEURS ══════════ -->
-      <section id="server-types">
+      <!-- ══════════ SECTION: PACKAGES ══════════ -->
+      <section id="pkg">
+        <div class="section-header">
+          <div class="section-icon orange">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M12 2l9 4.9V17L12 22l-9-5.1V6.9L12 2z" />
+              <path d="M12 2v20M3 7l9 5 9-5" />
+            </svg>
+          </div>
+          <h2>Packages &amp; Dépendances</h2>
+        </div>
+        <p>Gestion propre des logiciels et des mises à jour de sécurité.</p>
+        <pre><code><span class="c-prompt">#</span> <span class="c-keyword">apt</span> update && <span class="c-keyword">apt</span> upgrade -y
+<span class="c-prompt">#</span> <span class="c-keyword">apt-mark</span> hold nginx  <span class="c-comment"># Bloquer la version</span>
+<span class="c-prompt">#</span> <span class="c-keyword">apt</span> autoremove --purge</code></pre>
+      </section>
+
+      <!-- ══════════ SECTION: SYSTEMD ══════════ -->
+      <section id="systemd">
+        <div class="section-header">
+          <div class="section-icon purple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" />
+            </svg>
+          </div>
+          <h2>Systemd Avancé</h2>
+        </div>
+        <p>Maîtriser les unités de service pour une résilience maximale et le sandboxing.</p>
+        <details>
+          <summary>Exemple d'Unit File Robuste (Sandboxed)</summary>
+          <div class="solution-body">
+            <pre class="service"><code><span class="y-comment"># /etc/systemd/system/webapp.service</span>
+<span class="y-key">[Unit]</span>
+<span class="y-key">Description</span>=Webapp Python
+<span class="y-key">After</span>=network.target postgresql.service
+
+<span class="y-key">[Service]</span>
+<span class="y-key">User</span>=webapp
+<span class="y-key">Restart</span>=on-failure
+<span class="y-key">RestartSec</span>=5s
+<span class="y-key">CapabilityBoundingSet</span>=CAP_NET_BIND_SERVICE
+<span class="y-key">PrivateTmp</span>=true
+<span class="y-key">ProtectSystem</span>=strict
+<span class="y-key">ProtectHome</span>=yes
+<span class="y-key">NoNewPrivileges</span>=yes
+
+<span class="y-key">[Install]</span>
+<span class="y-key">WantedBy</span>=multi-user.target</code></pre>
+          </div>
+        </details>
+      </section>
+
+      <!-- ══════════ SECTION: RÉSEAU ══════════ -->
+      <section id="net">
+        <div class="section-header">
+          <div class="section-icon blue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01" />
+            </svg>
+          </div>
+          <h2>Réseau Avancé</h2>
+        </div>
+        <p>Diagnostic et optimisation de la pile TCP/IP.</p>
+        <pre><code><span class="c-prompt">#</span> <span class="c-keyword">ip</span> addr show
+<span class="c-prompt">#</span> <span class="c-keyword">tcpdump</span> -i eth0 port 80 -n
+<span class="c-prompt">#</span> <span class="c-keyword">dig</span> google.com @8.8.8.8</code></pre>
+      </section>
+
+      <!-- ══════════ SECTION: STOCKAGE ══════════ -->
+      <section id="storage">
+        <div class="section-header">
+          <div class="section-icon green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M21 12V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h7" />
+              <path d="M16 19h6M19 16l3 3-3 3" />
+            </svg>
+          </div>
+          <h2>Stockage &amp; Systèmes de fichiers</h2>
+        </div>
+        <p>Gestion dynamique des volumes avec LVM et santé des disques.</p>
+        <div class="card">
+          <pre><code><span class="c-prompt">#</span> <span class="c-keyword">pvcreate</span> /dev/sdb
+<span class="c-prompt">#</span> <span class="c-keyword">vgcreate</span> data_vg /dev/sdb
+<span class="c-prompt">#</span> <span class="c-keyword">lvcreate</span> -L 50G -n data_lv data_vg
+<span class="c-prompt">#</span> <span class="c-keyword">lvextend</span> -L +10G /dev/data_vg/data_lv --resizefs</code></pre>
+        </div>
+      </section>
+
+      <!-- ══════════ SECTION: MONITORING ══════════ -->
+      <section id="monitoring">
         <div class="section-header">
           <div class="section-icon cyan">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
               stroke-linecap="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" />
-              <line x1="2" y1="10" x2="22" y2="10" />
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
             </svg>
           </div>
-          <h2>Types de serveurs Linux</h2>
+          <h2>Monitoring &amp; Observabilité</h2>
         </div>
-        <p>Un serveur Linux peut remplir une multitude de rôles. Voici les typologies les plus courantes rencontrées en
-          entreprise et en infrastructure cloud.</p>
-
-        <div class="server-grid">
-          <div class="server-card web">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-            </div>
-            <h4>Serveur Web <span class="sc-port">80, 443</span></h4>
-            <p>Héberge des sites et applications. Utilise Nginx, Apache ou LiteSpeed. Souvent le point d'entrée
-              principal du trafic.</p>
-            <div class="sc-tags">
-              <span class="tag tag-blue">Nginx</span>
-              <span class="tag tag-blue">Apache</span>
-            </div>
+        <p>Passer de la simple surveillance à la compréhension profonde du système.</p>
+        <div class="card-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;">
+          <div class="card">
+            <h4>Prometheus</h4>
+            <p style="font-size: 13px;">Collecte de métriques temporelles via Node Exporter sur les serveurs Linux.</p>
           </div>
-
-          <div class="server-card db">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <ellipse cx="12" cy="5" rx="9" ry="3" />
-                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-              </svg>
-            </div>
-            <h4>Base de Données <span class="sc-port">5432, 3306</span></h4>
-            <p>Stocke et gère les données structurées. Critique pour les performances applicatives. Nécessite un tuning
-              kernel spécifique.</p>
-            <div class="sc-tags">
-              <span class="tag tag-purple">PostgreSQL</span>
-              <span class="tag tag-purple">MariaDB</span>
-            </div>
+          <div class="card">
+            <h4>Grafana</h4>
+            <p style="font-size: 13px;">Visualisation et dashboards haute performance connectés à Prometheus.</p>
           </div>
-
-          <div class="server-card proxy">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            </div>
-            <h4>Reverse Proxy / LB <span class="sc-port">80, 443</span></h4>
-            <p>Répartit la charge entre plusieurs serveurs backend et gère la terminaison SSL/TLS.</p>
-            <div class="sc-tags">
-              <span class="tag tag-purple">HAProxy</span>
-              <span class="tag tag-purple">Traefik</span>
-            </div>
-          </div>
-
-          <div class="server-card file">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-              </svg>
-            </div>
-            <h4>Serveur de Fichiers <span class="sc-port">2049, 445</span></h4>
-            <p>Partage de ressources de stockage sur le réseau local ou étendu. Utilise NFS ou Samba (SMB/CIFS).</p>
-            <div class="sc-tags">
-              <span class="tag tag-green">NFS</span>
-              <span class="tag tag-green">Samba</span>
-            </div>
-          </div>
-
-          <div class="server-card dns">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </div>
-            <h4>Serveur DNS <span class="sc-port">53</span></h4>
-            <p>Résolution de noms de domaine en adresses IP. Élément fondamental de toute infrastructure réseau.</p>
-            <div class="sc-tags">
-              <span class="tag tag-cyan">BIND9</span>
-              <span class="tag tag-cyan">Unbound</span>
-            </div>
-          </div>
-
-          <div class="server-card mail">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-            </div>
-            <h4>Serveur Mail <span class="sc-port">25, 587, 993</span></h4>
-            <p>Gère l'envoi (SMTP) et la réception (IMAP/POP3) de courriels. Requiert une configuration antispam
-              rigoureuse.</p>
-            <div class="sc-tags">
-              <span class="tag tag-orange">Postfix</span>
-              <span class="tag tag-orange">Dovecot</span>
-            </div>
+          <div class="card">
+            <h4>Loki</h4>
+            <p style="font-size: 13px;">Agrégation de logs cloud-native et intégration avec la stack PLG.</p>
           </div>
         </div>
-      </section>
 
-      <!-- ══════════ SECTION: INTRODUCTION SRE ══════════ -->
-      <section id="sre-intro">
-        <div class="section-header">
-          <div class="section-icon green">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              <path d="M9 11l3 3 5-5" />
-            </svg>
-          </div>
-          <h2>Ingénierie de Fiabilité (SRE)</h2>
-        </div>
-        <p>
-          L'ingénierie de fiabilité des sites (Site Reliability Engineering ou SRE) est une discipline qui intègre des aspects de l'ingénierie logicielle et les applique aux problèmes d'exploitation des infrastructures.
-        </p>
-        <p>
-          Fondée chez Google par Ben Treynor Sloss, la philosophie SRE repose sur un principe clé : <strong>« SRE is what happens when you ask a software engineer to design an operations function. »</strong> (Le SRE est ce qui se passe quand vous demandez à un ingénieur logiciel de concevoir une fonction d'exploitation).
-        </p>
-        <div class="card" style="margin-top: 20px;">
-          <h4>Les 3 principes d'or du SRE sur Linux</h4>
-          <ul style="margin-left: 20px; margin-top: 10px;">
-            <li><strong>L'automatisation outrancière :</strong> Si une tâche manuelle est répétée plus de trois fois, elle doit être automatisée par un script Bash, un playbook Ansible, ou intégrée dans un control plane.</li>
-            <li><strong>La culture du blameless post-mortem :</strong> Les pannes matérielles ou logicielles sont inévitables. L'analyse d'incident doit être orientée vers la résilience du système, sans jamais chercher de coupable humain.</li>
-            <li><strong>La gestion par budgets d'erreur :</strong> Le compromis entre vitesse d'innovation et stabilité système est arbitré scientifiquement par les indicateurs SLI, SLO et budgets d'erreurs associés.</li>
-          </ul>
-        </div>
-
-        <div class="card" style="margin-top: 20px; border-left: 3px solid var(--primary);">
+        <div class="card" style="margin-top: 24px; border-left: 3px solid var(--primary);">
           <h4 style="display: flex; align-items: center; gap: 8px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); flex-shrink: 0;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-            Lectures de Référence Recommandées
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); flex-shrink: 0;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            Ressources de Monitoring &amp; Observabilité
           </h4>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><strong>Site Reliability Engineering (Google)</strong> — <em>Betsy Beyer et al.</em> — Référence absolue du SRE. <a href="https://sre.google/sre-book/table-of-contents" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Consulter en ligne (Gratuit)</a></li>
-            <li style="margin-bottom: 8px;"><strong>UNIX and Linux System Administration Handbook</strong> — <em>Nemeth et al.</em> — La bible indispensable pour tout administrateur Linux.</li>
-            <li style="margin-bottom: 8px;"><strong>The Linux Command Line</strong> — <em>William Shotts</em> — Le guide de référence pour maîtriser le shell. <a href="http://linuxcommand.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Site officiel</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://prometheus.io/docs/introduction/overview/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Prometheus Docs</a> — L'outil de référence pour l'alerte et la collecte de métriques temporelles.</li>
+            <li style="margin-bottom: 8px;"><a href="https://grafana.com/docs/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Grafana Docs</a> — Guide de création de dashboards d'observabilité haute performance.</li>
+            <li style="margin-bottom: 8px;"><a href="https://opentelemetry.io/docs/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">OpenTelemetry</a> — Le standard unifié pour les traces, métriques et logs applicatifs.</li>
           </ul>
         </div>
       </section>
@@ -494,17 +497,20 @@
       <div class="toc-group">
         <span class="toc-label">Sur cette page</span>
         <ul id="on-this-page">
-          <li><a href="#purpose" class="active">Objectif général</a></li>
-          <li><a href="#server-types">Types de serveurs</a></li>
-          <li><a href="#sre-intro">Introduction SRE</a></li>
+          <li><a href="#sec">Sécurité &amp; Hardening</a></li>
+          <li><a href="#pkg">Packages &amp; Dépendances</a></li>
+          <li><a href="#systemd">Systemd Avancé</a></li>
+          <li><a href="#net">Réseau Avancé</a></li>
+          <li><a href="#storage">Stockage &amp; FS</a></li>
+          <li><a href="#monitoring">Monitoring</a></li>
         </ul>
       </div>
       <div class="toc-group">
         <span class="toc-label">Statut du Guide</span>
         <div class="status-card">
           <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~7 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Fondamentaux</span></div>
+          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~15 min</span></div>
+          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Ingénieur SRE</span></div>
           <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
         </div>
       </div>

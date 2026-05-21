@@ -4,9 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Introduction &amp; Guide - Administration Serveur Linux</title>
-  <meta name="description"
-    content="Guide complet d'administration serveur Linux : types de serveurs, maintenance, sécurité, DevOps, Kubernetes, SRE, nouvelles pratiques.">
+  <title>Revue Pratique &amp; Diagnostic - Administration Serveur Linux</title>
+  <meta name="description" content="Guide pratique de diagnostic serveur Linux : caractériser les services, monitorer CPU/RAM/IO, explorer les applications et lire les logs.">
   <link rel="stylesheet" href="css/main.css">
   <script src="js/script.js" defer></script>
 </head>
@@ -38,7 +37,7 @@
     </div>
 
     <ul class="header-nav">
-      <li><a href="index.html#purpose" class="active">Objectif</a></li>
+      <li><a href="index.html#purpose">Objectif</a></li>
       <li><a href="index.html#server-types">Serveurs</a></li>
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview">Quiz</a></li>
@@ -280,10 +279,10 @@
     <!-- ══ MAIN CONTENT ══ -->
     <main>
 
-      <div class="breadcrumb">Docs <span>›</span> Guides <span>›</span> Introduction</div>
-      <h1 class="display-mega">Introduction &amp; Concepts</h1>
+      <div class="breadcrumb">Docs <span>›</span> Revue Pratique <span>›</span> Diagnostic &amp; Ressources</div>
+      <h1 class="display-mega">Diagnostic &amp; Base</h1>
       <p class="subtitle" style="font-size: 18px; margin-bottom: 24px;">
-        Objectifs et fondations indispensables pour appréhender l'administration système moderne et la philosophie SRE.
+        Méthodes et outils pour analyser les services, le hardware et les logs d'un serveur Linux en temps réel.
       </p>
 
       <div class="page-meta" style="margin-bottom: 40px;">
@@ -292,197 +291,166 @@
             <circle cx="8" cy="8" r="6" />
             <path d="M8 4.5V8l2.5 1.5" stroke-linecap="round" />
           </svg>
-          ~7 min de lecture
+          ~10 min de lecture
         </span>
         <span class="page-meta-item">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
             <path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4z" />
           </svg>
-          Fondamentaux
+          Pratique / Sysadmin
         </span>
         <span class="page-meta-item"><span class="badge">Mis à jour Mai 2026</span></span>
       </div>
 
       <div class="page-banner-container">
-        <img src="img/index_hero.jpg" alt="Administration Serveur Linux - Introduction" class="page-banner">
+        <img src="img/diagnostic_hero.jpg" alt="Administration Serveur Linux - Diagnostic &amp; Ressources" class="page-banner">
       </div>
 
-      <!-- ══════════ SECTION: OBJECTIF ══════════ -->
-      <section id="purpose">
+      <!-- ══════════ SECTION: 01 CARACTÉRISER ══════════ -->
+      <section id="obj1">
         <div class="section-header">
-          <div class="section-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-              stroke-linecap="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 8v4M12 16h.01" />
-            </svg>
-          </div>
-          <h2>Objectif général</h2>
-        </div>
-        <p>Ce guide couvre l'intégralité du cycle de vie d'un serveur Linux : de son identification à sa mise en
-          production, en passant par la maintenance quotidienne, la gestion technique et les pratiques DevOps modernes.
-        <div class="note info">
-          Les commandes sont divisées en catégories :<br><br>
-          <span class="tag tag-blue">Bleu</span> — La <strong>finalité du serveur</strong> : ports exposés et services
-          actifs.<br>
-          <span class="tag tag-red">Rouge</span> — Le <strong>niveau de saturation</strong> des ressources
-          matérielles.<br>
-          <span class="tag tag-green">Vert</span> — Les <strong>erreurs potentielles</strong> et événements critiques.
-        </div>
-      </section>
-
-      <!-- ══════════ SECTION: TYPES DE SERVEURS ══════════ -->
-      <section id="server-types">
-        <div class="section-header">
-          <div class="section-icon cyan">
+          <div class="section-icon blue">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
               stroke-linecap="round">
               <rect x="2" y="3" width="20" height="14" rx="2" />
-              <line x1="2" y1="10" x2="22" y2="10" />
+              <path d="M6 9l3 3-3 3M12 15h6" />
             </svg>
           </div>
-          <h2>Types de serveurs Linux</h2>
+          <h2><span class="num">01 · </span>Caractériser le serveur</h2>
         </div>
-        <p>Un serveur Linux peut remplir une multitude de rôles. Voici les typologies les plus courantes rencontrées en
-          entreprise et en infrastructure cloud.</p>
-
-        <div class="server-grid">
-          <div class="server-card web">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-            </div>
-            <h4>Serveur Web <span class="sc-port">80, 443</span></h4>
-            <p>Héberge des sites et applications. Utilise Nginx, Apache ou LiteSpeed. Souvent le point d'entrée
-              principal du trafic.</p>
-            <div class="sc-tags">
-              <span class="tag tag-blue">Nginx</span>
-              <span class="tag tag-blue">Apache</span>
+        <p>Identifier la mission du serveur en analysant les ports ouverts et les processus qui les écoutent.</p>
+        <details open>
+          <summary>Commandes de diagnostic réseau</summary>
+          <div class="solution-body">
+            <pre><code><span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">sudo</span> ss -tlpn        <span class="c-comment"># ports en écoute (moderne)</span>
+<span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">sudo</span> netstat -tlpn   <span class="c-comment"># ancienne commande</span>
+<span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">sudo</span> ps auxf         <span class="c-comment"># processus en arbre</span></code></pre>
+            <p>Exemple de résultat analysé :</p>
+            <pre><code>Proto  Local Address       State   PID/Program
+tcp    0.0.0.0:22          LISTEN  601/sshd
+tcp    127.0.0.1:5432      LISTEN  625/postgres
+tcp    0.0.0.0:8000        LISTEN  885/haproxy</code></pre>
+            <div class="note info">
+              <strong>Analyse :</strong> Le serveur expose un service <strong>SSH</strong> (22) et un
+              <strong>HAProxy</strong> (8000). Il fait donc office de Load Balancer. Une base
+              <strong>PostgreSQL</strong> tourne localement.
             </div>
           </div>
+        </details>
+      </section>
 
-          <div class="server-card db">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <ellipse cx="12" cy="5" rx="9" ry="3" />
-                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-              </svg>
-            </div>
-            <h4>Base de Données <span class="sc-port">5432, 3306</span></h4>
-            <p>Stocke et gère les données structurées. Critique pour les performances applicatives. Nécessite un tuning
-              kernel spécifique.</p>
-            <div class="sc-tags">
-              <span class="tag tag-purple">PostgreSQL</span>
-              <span class="tag tag-purple">MariaDB</span>
-            </div>
+      <!-- ══════════ SECTION: 02 RESSOURCES ══════════ -->
+      <section id="obj2">
+        <div class="section-header">
+          <div class="section-icon red">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M3 3v18h18" />
+              <path d="M7 16l4-6 4 4 4-8" />
+            </svg>
           </div>
-
-          <div class="server-card proxy">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            </div>
-            <h4>Reverse Proxy / LB <span class="sc-port">80, 443</span></h4>
-            <p>Répartit la charge entre plusieurs serveurs backend et gère la terminaison SSL/TLS.</p>
-            <div class="sc-tags">
-              <span class="tag tag-purple">HAProxy</span>
-              <span class="tag tag-purple">Traefik</span>
-            </div>
+          <h2><span class="num">02 · </span>Ressources matérielles</h2>
+        </div>
+        <p>Mesurer la charge du système (CPU, RAM, Disque) pour identifier les goulots d'étranglement.</p>
+        <div class="two-col">
+          <div class="card">
+            <h4>CPU & Mémoire</h4>
+            <pre><code><span class="c-prompt">admin@srv:~$</span> htop
+<span class="c-prompt">admin@srv:~$</span> uptime
+<span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">free</span> -m</code></pre>
           </div>
-
-          <div class="server-card file">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-              </svg>
-            </div>
-            <h4>Serveur de Fichiers <span class="sc-port">2049, 445</span></h4>
-            <p>Partage de ressources de stockage sur le réseau local ou étendu. Utilise NFS ou Samba (SMB/CIFS).</p>
-            <div class="sc-tags">
-              <span class="tag tag-green">NFS</span>
-              <span class="tag tag-green">Samba</span>
-            </div>
+          <div class="card">
+            <h4>Stockage I/O</h4>
+            <pre><code><span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">df</span> -h
+<span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">lsblk</span>
+<span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">sudo</span> iotop</code></pre>
           </div>
-
-          <div class="server-card dns">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </div>
-            <h4>Serveur DNS <span class="sc-port">53</span></h4>
-            <p>Résolution de noms de domaine en adresses IP. Élément fondamental de toute infrastructure réseau.</p>
-            <div class="sc-tags">
-              <span class="tag tag-cyan">BIND9</span>
-              <span class="tag tag-cyan">Unbound</span>
-            </div>
-          </div>
-
-          <div class="server-card mail">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-            </div>
-            <h4>Serveur Mail <span class="sc-port">25, 587, 993</span></h4>
-            <p>Gère l'envoi (SMTP) et la réception (IMAP/POP3) de courriels. Requiert une configuration antispam
-              rigoureuse.</p>
-            <div class="sc-tags">
-              <span class="tag tag-orange">Postfix</span>
-              <span class="tag tag-orange">Dovecot</span>
-            </div>
+        </div>
+        <div class="callout danger">
+          <div class="callout-body">
+            <strong>Alerte OOM :</strong> Si vous voyez un processus tué mystérieusement, vérifiez le kernel log :
+            <code>dmesg | grep -i "out of memory"</code>.
           </div>
         </div>
       </section>
 
-      <!-- ══════════ SECTION: INTRODUCTION SRE ══════════ -->
-      <section id="sre-intro">
+      <!-- ══════════ SECTION: 03 APPLICATIONS ══════════ -->
+      <section id="obj3">
         <div class="section-header">
-          <div class="section-icon green">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              <path d="M9 11l3 3 5-5" />
+          <div class="section-icon purple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="6" r="3" />
+              <circle cx="18" cy="18" r="3" />
+              <path d="M9 11l6-3M9 13l6 3" />
             </svg>
           </div>
-          <h2>Ingénierie de Fiabilité (SRE)</h2>
+          <h2><span class="num">03 · </span>Explorer les applications</h2>
         </div>
-        <p>
-          L'ingénierie de fiabilité des sites (Site Reliability Engineering ou SRE) est une discipline qui intègre des aspects de l'ingénierie logicielle et les applique aux problèmes d'exploitation des infrastructures.
-        </p>
-        <p>
-          Fondée chez Google par Ben Treynor Sloss, la philosophie SRE repose sur un principe clé : <strong>« SRE is what happens when you ask a software engineer to design an operations function. »</strong> (Le SRE est ce qui se passe quand vous demandez à un ingénieur logiciel de concevoir une fonction d'exploitation).
-        </p>
-        <div class="card" style="margin-top: 20px;">
-          <h4>Les 3 principes d'or du SRE sur Linux</h4>
-          <ul style="margin-left: 20px; margin-top: 10px;">
-            <li><strong>L'automatisation outrancière :</strong> Si une tâche manuelle est répétée plus de trois fois, elle doit être automatisée par un script Bash, un playbook Ansible, ou intégrée dans un control plane.</li>
-            <li><strong>La culture du blameless post-mortem :</strong> Les pannes matérielles ou logicielles sont inévitables. L'analyse d'incident doit être orientée vers la résilience du système, sans jamais chercher de coupable humain.</li>
-            <li><strong>La gestion par budgets d'erreur :</strong> Le compromis entre vitesse d'innovation et stabilité système est arbitré scientifiquement par les indicateurs SLI, SLO et budgets d'erreurs associés.</li>
-          </ul>
+        <p>Comprendre l'interaction entre les différents services installés (Systemd, Docker, scripts).</p>
+        <div class="arch-box">
+          Client ➜ HAProxy (:8000) ➜ Webapp Python (:9000) ➜ PostgreSQL (:5432)
+        </div>
+        <pre><code><span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">sudo</span> systemctl status webapp
+<span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">docker</span> ps -a
+<span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">cat</span> /home/admin/.env</code></pre>
+      </section>
+
+      <!-- ══════════ SECTION: 04 LOGS ══════════ -->
+      <section id="obj4">
+        <div class="section-header">
+          <div class="section-icon green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+            </svg>
+          </div>
+          <h2><span class="num">04 · </span>Analyser les logs</h2>
+        </div>
+        <p>La source ultime de vérité pour diagnostiquer les erreurs applicatives et système.</p>
+        <pre><code><span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">sudo</span> journalctl -u webapp -f
+<span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">sudo</span> journalctl -p err --since <span class="c-string">"1 hour ago"</span>
+<span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">tail</span> -f /var/log/syslog</code></pre>
+      </section>
+
+      <!-- ══════════ SECTION: PRO COMPLEMENT ══════════ -->
+      <section id="diag-pro">
+        <div class="section-header">
+          <div class="section-icon orange">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2>Diagnostic Rapide en Production (Crisis Management)</h2>
+        </div>
+        <p>En tant que SRE, lorsqu'une alerte retentit, vous devez diagnostiquer la cause racine (CPU, RAM, Disque, Réseau) sous pression. Suivez cette checklist en 5 minutes :</p>
+        
+        <div class="maint-grid">
+          <div class="maint-card">
+            <h4>1. Tri CPU & RAM</h4>
+            <p style="font-size: 13px; margin-top: 8px;">Tapez <code>top</code> ou <code>htop</code>. Triez par CPU (%) avec <code>P</code> ou par mémoire (%) avec <code>M</code>. Repérez le processus incriminé.</p>
+          </div>
+          <div class="maint-card">
+            <h4>2. Vérification I/O Disque</h4>
+            <p style="font-size: 13px; margin-top: 8px;">Tapez <code>iostat -xz 1 10</code>. Si <code>%util</code> approche 100% ou si <code>await</code> dépasse 20ms, vos disques saturent. Identifiez le coupable avec <code>iotop -o</code>.</p>
+          </div>
+          <div class="maint-card">
+            <h4>3. Analyse Réseau</h4>
+            <p style="font-size: 13px; margin-top: 8px;">Tapez <code>ss -s</code> pour voir le nombre total de sockets TCP actives. Utilisez <code>iftop</code> pour détecter une consommation anormale de bande passante par adresse IP.</p>
+          </div>
         </div>
 
-        <div class="card" style="margin-top: 20px; border-left: 3px solid var(--primary);">
+        <div class="card" style="margin-top: 30px; border-left: 3px solid var(--primary);">
           <h4 style="display: flex; align-items: center; gap: 8px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); flex-shrink: 0;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-            Lectures de Référence Recommandées
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); flex-shrink: 0;"><path d="M16.3 11 12 3 7.7 11a6 6 0 1 0 8.6 0z"></path></svg>
+            Pratique &amp; Apprentissage Interactif
           </h4>
+          <p style="font-size: 13px; margin-top: 8px;">Pour vous entraîner sur de vrais incidents de production Linux dans un environnement sécurisé et interactif :</p>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><strong>Site Reliability Engineering (Google)</strong> — <em>Betsy Beyer et al.</em> — Référence absolue du SRE. <a href="https://sre.google/sre-book/table-of-contents" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Consulter en ligne (Gratuit)</a></li>
-            <li style="margin-bottom: 8px;"><strong>UNIX and Linux System Administration Handbook</strong> — <em>Nemeth et al.</em> — La bible indispensable pour tout administrateur Linux.</li>
-            <li style="margin-bottom: 8px;"><strong>The Linux Command Line</strong> — <em>William Shotts</em> — Le guide de référence pour maîtriser le shell. <a href="http://linuxcommand.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Site officiel</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://sadservers.com/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">SadServers</a> — Résolution d'incidents réels sur des serveurs Linux (scénarios de CPU saturés, disques pleins, sockets perdues).</li>
+            <li style="margin-bottom: 8px;"><a href="http://tldp.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">The Linux Documentation Project (TLDP)</a> — Guides complets d'administration système et réseaux.</li>
           </ul>
         </div>
       </section>
@@ -494,17 +462,19 @@
       <div class="toc-group">
         <span class="toc-label">Sur cette page</span>
         <ul id="on-this-page">
-          <li><a href="#purpose" class="active">Objectif général</a></li>
-          <li><a href="#server-types">Types de serveurs</a></li>
-          <li><a href="#sre-intro">Introduction SRE</a></li>
+          <li><a href="#obj1">1. Caractériser</a></li>
+          <li><a href="#obj2">2. Ressources</a></li>
+          <li><a href="#obj3">3. Explorer apps</a></li>
+          <li><a href="#obj4">4. Analyser logs</a></li>
+          <li><a href="#diag-pro">Diagnostic Crise</a></li>
         </ul>
       </div>
       <div class="toc-group">
         <span class="toc-label">Statut du Guide</span>
         <div class="status-card">
           <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~7 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Fondamentaux</span></div>
+          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~10 min</span></div>
+          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Sysadmin / SRE</span></div>
           <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
         </div>
       </div>

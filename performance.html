@@ -4,9 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Introduction &amp; Guide - Administration Serveur Linux</title>
-  <meta name="description"
-    content="Guide complet d'administration serveur Linux : types de serveurs, maintenance, sécurité, DevOps, Kubernetes, SRE, nouvelles pratiques.">
+  <title>Performance &amp; Dépannage - Administration Serveur Linux</title>
+  <meta name="description" content="Guide de performance et dépannage avancé Linux : sysctl kernel tuning, swap, strace, lsof, tcpdump et méthodologies USE/RED pour les ingénieurs SRE.">
   <link rel="stylesheet" href="css/main.css">
   <script src="js/script.js" defer></script>
 </head>
@@ -38,7 +37,7 @@
     </div>
 
     <ul class="header-nav">
-      <li><a href="index.html#purpose" class="active">Objectif</a></li>
+      <li><a href="index.html#purpose">Objectif</a></li>
       <li><a href="index.html#server-types">Serveurs</a></li>
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview">Quiz</a></li>
@@ -280,10 +279,10 @@
     <!-- ══ MAIN CONTENT ══ -->
     <main>
 
-      <div class="breadcrumb">Docs <span>›</span> Guides <span>›</span> Introduction</div>
-      <h1 class="display-mega">Introduction &amp; Concepts</h1>
+      <div class="breadcrumb">Docs <span>›</span> Performance <span>›</span> Tuning &amp; Dépannage</div>
+      <h1 class="display-mega">Performance &amp; Dépannage</h1>
       <p class="subtitle" style="font-size: 18px; margin-bottom: 24px;">
-        Objectifs et fondations indispensables pour appréhender l'administration système moderne et la philosophie SRE.
+        Optimisation du noyau (sysctl) et méthodologies d'analyse de pannes pour ingénieurs DevOps &amp; SRE.
       </p>
 
       <div class="page-meta" style="margin-bottom: 40px;">
@@ -292,197 +291,148 @@
             <circle cx="8" cy="8" r="6" />
             <path d="M8 4.5V8l2.5 1.5" stroke-linecap="round" />
           </svg>
-          ~7 min de lecture
+          ~10 min de lecture
         </span>
         <span class="page-meta-item">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
             <path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4z" />
           </svg>
-          Fondamentaux
+          SRE / Kernel Tuning
         </span>
         <span class="page-meta-item"><span class="badge">Mis à jour Mai 2026</span></span>
       </div>
 
       <div class="page-banner-container">
-        <img src="img/index_hero.jpg" alt="Administration Serveur Linux - Introduction" class="page-banner">
+        <img src="img/performance_hero.jpg" alt="Administration Serveur Linux - Performance &amp; Dépannage" class="page-banner">
       </div>
 
-      <!-- ══════════ SECTION: OBJECTIF ══════════ -->
-      <section id="purpose">
+      <!-- ══════════ SECTION: PERFORMANCE ══════════ -->
+      <section id="perf">
         <div class="section-header">
-          <div class="section-icon">
+          <div class="section-icon orange">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M18 20V10M12 20V4M6 20v-6" />
+            </svg>
+          </div>
+          <h2>Performance &amp; Tuning</h2>
+        </div>
+        <p>Le noyau Linux par défaut est configuré pour un usage bureautique. Pour les serveurs à forte charge, certaines variables systcl doivent être ajustées.</p>
+
+        <h3>Kernel Tuning (sysctl)</h3>
+        <p>Optimisez la gestion de la mémoire virtuelle, le nombre maximal de descripteurs de fichiers ouverts et la rétention de socket.</p>
+        <pre class="sysctl"><code><span class="c-comment"># /etc/sysctl.conf</span>
+fs.file-max = <span class="c-number">2097152</span>
+vm.swappiness = <span class="c-number">10</span>
+vm.dirty_background_ratio = <span class="c-number">5</span>
+vm.dirty_ratio = <span class="c-number">10</span></code></pre>
+        <p>Pour appliquer les modifications immédiatement sans redémarrer :</p>
+        <pre><code><span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">sudo</span> sysctl -p</code></pre>
+
+        <div class="two-col" style="margin-top: 24px;">
+          <div class="card">
+            <h4>SWAP (Mémoire d'échange)</h4>
+            <p>Définir le swappiness à 10 indique au système de préférer conserver les pages en RAM physique, évitant l'écroulement des performances causé par les disques.</p>
+          </div>
+          <div class="card">
+            <h4>File Descriptors</h4>
+            <p>Chaque connexion socket ouverte dans Nginx ou HAProxy utilise un descripteur de fichier. Augmentez la limite globale `fs.file-max` pour éviter l'erreur "Too many open files".</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ SECTION: DÉPANNAGE ══════════ -->
+      <section id="debug">
+        <div class="section-header">
+          <div class="section-icon red">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
               stroke-linecap="round">
               <circle cx="12" cy="12" r="10" />
               <path d="M12 8v4M12 16h.01" />
             </svg>
           </div>
-          <h2>Objectif général</h2>
+          <h2>Dépannage Avancé</h2>
         </div>
-        <p>Ce guide couvre l'intégralité du cycle de vie d'un serveur Linux : de son identification à sa mise en
-          production, en passant par la maintenance quotidienne, la gestion technique et les pratiques DevOps modernes.
-        <div class="note info">
-          Les commandes sont divisées en catégories :<br><br>
-          <span class="tag tag-blue">Bleu</span> — La <strong>finalité du serveur</strong> : ports exposés et services
-          actifs.<br>
-          <span class="tag tag-red">Rouge</span> — Le <strong>niveau de saturation</strong> des ressources
-          matérielles.<br>
-          <span class="tag tag-green">Vert</span> — Les <strong>erreurs potentielles</strong> et événements critiques.
-        </div>
-      </section>
-
-      <!-- ══════════ SECTION: TYPES DE SERVEURS ══════════ -->
-      <section id="server-types">
-        <div class="section-header">
-          <div class="section-icon cyan">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-              stroke-linecap="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" />
-              <line x1="2" y1="10" x2="22" y2="10" />
-            </svg>
-          </div>
-          <h2>Types de serveurs Linux</h2>
-        </div>
-        <p>Un serveur Linux peut remplir une multitude de rôles. Voici les typologies les plus courantes rencontrées en
-          entreprise et en infrastructure cloud.</p>
+        <p>Face à une panne complexe en production, utilisez la boîte à outils de diagnostic bas niveau.</p>
 
         <div class="server-grid">
-          <div class="server-card web">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-            </div>
-            <h4>Serveur Web <span class="sc-port">80, 443</span></h4>
-            <p>Héberge des sites et applications. Utilise Nginx, Apache ou LiteSpeed. Souvent le point d'entrée
-              principal du trafic.</p>
-            <div class="sc-tags">
-              <span class="tag tag-blue">Nginx</span>
-              <span class="tag tag-blue">Apache</span>
-            </div>
+          <div class="server-card">
+            <h4>strace</h4>
+            <p>Tracer les appels système (syscalls) effectués par un processus. Indispensable pour comprendre pourquoi une application se bloque.</p>
+            <pre><code><span class="c-prompt">#</span> strace -p 1234 -c</code></pre>
           </div>
-
-          <div class="server-card db">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <ellipse cx="12" cy="5" rx="9" ry="3" />
-                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-              </svg>
-            </div>
-            <h4>Base de Données <span class="sc-port">5432, 3306</span></h4>
-            <p>Stocke et gère les données structurées. Critique pour les performances applicatives. Nécessite un tuning
-              kernel spécifique.</p>
-            <div class="sc-tags">
-              <span class="tag tag-purple">PostgreSQL</span>
-              <span class="tag tag-purple">MariaDB</span>
-            </div>
+          <div class="server-card">
+            <h4>lsof</h4>
+            <p>Lister tous les fichiers ouverts par un processus, y compris les fichiers de configurations et les sockets réseau.</p>
+            <pre><code><span class="c-prompt">#</span> lsof -i :80</code></pre>
           </div>
-
-          <div class="server-card proxy">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            </div>
-            <h4>Reverse Proxy / LB <span class="sc-port">80, 443</span></h4>
-            <p>Répartit la charge entre plusieurs serveurs backend et gère la terminaison SSL/TLS.</p>
-            <div class="sc-tags">
-              <span class="tag tag-purple">HAProxy</span>
-              <span class="tag tag-purple">Traefik</span>
-            </div>
-          </div>
-
-          <div class="server-card file">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-              </svg>
-            </div>
-            <h4>Serveur de Fichiers <span class="sc-port">2049, 445</span></h4>
-            <p>Partage de ressources de stockage sur le réseau local ou étendu. Utilise NFS ou Samba (SMB/CIFS).</p>
-            <div class="sc-tags">
-              <span class="tag tag-green">NFS</span>
-              <span class="tag tag-green">Samba</span>
-            </div>
-          </div>
-
-          <div class="server-card dns">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </div>
-            <h4>Serveur DNS <span class="sc-port">53</span></h4>
-            <p>Résolution de noms de domaine en adresses IP. Élément fondamental de toute infrastructure réseau.</p>
-            <div class="sc-tags">
-              <span class="tag tag-cyan">BIND9</span>
-              <span class="tag tag-cyan">Unbound</span>
-            </div>
-          </div>
-
-          <div class="server-card mail">
-            <div class="server-card-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-            </div>
-            <h4>Serveur Mail <span class="sc-port">25, 587, 993</span></h4>
-            <p>Gère l'envoi (SMTP) et la réception (IMAP/POP3) de courriels. Requiert une configuration antispam
-              rigoureuse.</p>
-            <div class="sc-tags">
-              <span class="tag tag-orange">Postfix</span>
-              <span class="tag tag-orange">Dovecot</span>
-            </div>
+          <div class="server-card">
+            <h4>tcpdump</h4>
+            <p>Capturer les paquets réseau bas niveau passant par une interface. Exporter le format PCAP pour Wireshark.</p>
+            <pre><code><span class="c-prompt">#</span> tcpdump -w dump.pcap</code></pre>
           </div>
         </div>
-      </section>
 
-      <!-- ══════════ SECTION: INTRODUCTION SRE ══════════ -->
-      <section id="sre-intro">
-        <div class="section-header">
-          <div class="section-icon green">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              <path d="M9 11l3 3 5-5" />
-            </svg>
+        <h3 style="margin-top: 30px;">⚡ Diagnostic en 60 secondes (Brendan Gregg Checklist)</h3>
+        <p>Lors d'une crise de production sur un serveur Linux, exécutez ces 10 commandes de diagnostic de base dans l'ordre pour identifier la source du goulet d'étranglement :</p>
+        
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 15px 0;">
+          <ol style="margin-left: 20px; line-height: 1.6; font-size: 13.5px;">
+            <li style="margin-bottom: 12px;">
+              <strong><code>uptime</code></strong> : Permet de voir la tendance de la charge système (Load Average sur 1, 5, et 15 minutes).
+              <pre style="margin-top: 4px; padding: 6px; background: var(--bg); font-family: monospace;"><code><span class="c-prompt">#</span> uptime
+20:45:00 up 10 days, 2:30, 2 users, load average: 4.15, 2.50, 1.10</code></pre>
+            </li>
+            <li style="margin-bottom: 12px;">
+              <strong><code>dmesg -T | tail -n 50</code></strong> : Analyse le tampon circulaire du noyau à la recherche d'erreurs matérielles, de dysfonctionnements de pilotes ou d'abattage de processus par le tueur de mémoire (<strong>OOM Killer</strong>).
+              <pre style="margin-top: 4px; padding: 6px; background: var(--bg); font-family: monospace;"><code><span class="c-prompt">#</span> dmesg -T | grep -i "oom-killer"</code></pre>
+            </li>
+            <li style="margin-bottom: 12px;">
+              <strong><code>vmstat 1</code></strong> : Fournit une vue d'ensemble du CPU, de la mémoire et des opérations d'E/S en temps réel. Surveillez la colonne <code>si/so</code> (swap in / swap out) qui indique une saturation RAM, et <code>r</code> (processus en attente de CPU).
+            </li>
+            <li style="margin-bottom: 12px;">
+              <strong><code>mpstat -P ALL 1</code></strong> : Affiche l'activité CPU détaillée cœur par cœur. Idéal pour repérer un thread applicatif mal conçu ou mono-thread qui sature un seul cœur de processeur.
+            </li>
+            <li style="margin-bottom: 12px;">
+              <strong><code>pidstat 1</code></strong> : Identifie les processus exacts à l'origine de la consommation CPU, de la mémoire virtuelle ou des E/S disques.
+            </li>
+            <li style="margin-bottom: 12px;">
+              <strong><code>iostat -xz 1</code></strong> : Fournit des métriques détaillées sur les performances des disques de stockage. Observez attentivement la colonne <code>await</code> (temps d'attente moyen de la requête d'E/S) et <code>%util</code> (saturation physique du disque).
+            </li>
+            <li style="margin-bottom: 12px;">
+              <strong><code>free -h</code></strong> : Affiche la mémoire disponible, utilisée et mise en cache. Si <code>available</code> est proche de 0, le système risque le swapping sévère.
+            </li>
+            <li style="margin-bottom: 12px;">
+              <strong><code>sar -n DEV 1</code></strong> : Mesure le trafic réseau traversant les interfaces (paquets/sec et octets/sec) pour détecter les surcharges de bande passante ou les attaques DDoS.
+            </li>
+            <li style="margin-bottom: 12px;">
+              <strong><code>sar -n TCP,ETCP 1</code></strong> : Affiche les métriques TCP avancées. Des taux élevés de retransmissions (<code>retrans/s</code>) signalent des goulots d'étranglement ou des pannes réseau physiques.
+            </li>
+            <li style="margin-bottom: 4px;">
+              <strong><code>top</code></strong> (ou <code>htop</code>) : Permet de synthétiser toutes les métriques précédentes et de garder un œil sur les threads consommant le plus de ressources système.
+            </li>
+          </ol>
+        </div>
+
+        <h3 style="margin-top: 30px;">Méthodologies d'analyse SRE</h3>
+        <div class="two-col">
+          <div class="card">
+            <h4>Méthode USE (Hardware)</h4>
+            <p><strong>U</strong>tilization : taux d'utilisation de la ressource (ex: 80% CPU).<br><strong>S</strong>aturation : files d'attente (ex: load average élevé).<br><strong>E</strong>rrors : erreurs système ou matérielles (ex: erreurs E/S disques).</p>
           </div>
-          <h2>Ingénierie de Fiabilité (SRE)</h2>
-        </div>
-        <p>
-          L'ingénierie de fiabilité des sites (Site Reliability Engineering ou SRE) est une discipline qui intègre des aspects de l'ingénierie logicielle et les applique aux problèmes d'exploitation des infrastructures.
-        </p>
-        <p>
-          Fondée chez Google par Ben Treynor Sloss, la philosophie SRE repose sur un principe clé : <strong>« SRE is what happens when you ask a software engineer to design an operations function. »</strong> (Le SRE est ce qui se passe quand vous demandez à un ingénieur logiciel de concevoir une fonction d'exploitation).
-        </p>
-        <div class="card" style="margin-top: 20px;">
-          <h4>Les 3 principes d'or du SRE sur Linux</h4>
-          <ul style="margin-left: 20px; margin-top: 10px;">
-            <li><strong>L'automatisation outrancière :</strong> Si une tâche manuelle est répétée plus de trois fois, elle doit être automatisée par un script Bash, un playbook Ansible, ou intégrée dans un control plane.</li>
-            <li><strong>La culture du blameless post-mortem :</strong> Les pannes matérielles ou logicielles sont inévitables. L'analyse d'incident doit être orientée vers la résilience du système, sans jamais chercher de coupable humain.</li>
-            <li><strong>La gestion par budgets d'erreur :</strong> Le compromis entre vitesse d'innovation et stabilité système est arbitré scientifiquement par les indicateurs SLI, SLO et budgets d'erreurs associés.</li>
-          </ul>
+          <div class="card">
+            <h4>Méthode RED (Applicatif)</h4>
+            <p><strong>R</strong>ate : nombre de requêtes par seconde (RPS).<br><strong>E</strong>rrors : taux d'erreurs (ex: erreurs HTTP 5xx).<br><strong>D</strong>uration : latence de réponse applicative.</p>
+          </div>
         </div>
 
-        <div class="card" style="margin-top: 20px; border-left: 3px solid var(--primary);">
-          <h4 style="display: flex; align-items: center; gap: 8px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); flex-shrink: 0;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-            Lectures de Référence Recommandées
-          </h4>
+        <div class="card" style="margin-top: 24px; border-left: 3px solid var(--primary);">
+          <h4>📊 Références de Performance Linux</h4>
+          <p style="font-size: 13px; margin-top: 8px;">Pour aller plus loin dans l'optimisation système bas niveau et l'analyse eBPF :</p>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><strong>Site Reliability Engineering (Google)</strong> — <em>Betsy Beyer et al.</em> — Référence absolue du SRE. <a href="https://sre.google/sre-book/table-of-contents" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Consulter en ligne (Gratuit)</a></li>
-            <li style="margin-bottom: 8px;"><strong>UNIX and Linux System Administration Handbook</strong> — <em>Nemeth et al.</em> — La bible indispensable pour tout administrateur Linux.</li>
-            <li style="margin-bottom: 8px;"><strong>The Linux Command Line</strong> — <em>William Shotts</em> — Le guide de référence pour maîtriser le shell. <a href="http://linuxcommand.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Site officiel</a></li>
+            <li style="margin-bottom: 8px;"><a href="https://www.brendangregg.com/linuxperf.html" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Linux Performance par Brendan Gregg</a> — La référence mondiale incontournable (modèles d'outils de tracing et d'observabilité).</li>
+            <li style="margin-bottom: 8px;"><a href="https://opentelemetry.io/docs/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">OpenTelemetry Docs</a> — Standards industriels pour la télémétrie unifiée.</li>
+            <li style="margin-bottom: 8px;"><a href="https://learn.datadoghq.com/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Datadog Learning Center</a> — Formations interactives gratuites sur le debugging et les performances cloud.</li>
           </ul>
         </div>
       </section>
@@ -494,17 +444,16 @@
       <div class="toc-group">
         <span class="toc-label">Sur cette page</span>
         <ul id="on-this-page">
-          <li><a href="#purpose" class="active">Objectif général</a></li>
-          <li><a href="#server-types">Types de serveurs</a></li>
-          <li><a href="#sre-intro">Introduction SRE</a></li>
+          <li><a href="#perf">Performance &amp; Tuning</a></li>
+          <li><a href="#debug">Dépannage Avancé</a></li>
         </ul>
       </div>
       <div class="toc-group">
         <span class="toc-label">Statut du Guide</span>
         <div class="status-card">
           <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~7 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Fondamentaux</span></div>
+          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~10 min</span></div>
+          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">SRE / Expert</span></div>
           <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
         </div>
       </div>

@@ -1,12 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('aside ul li a');
+  const navLinks = document.querySelectorAll('aside:not(.right-sidebar) ul li a');
   const progressBar = document.getElementById('progress-bar');
   const backToTopBtn = document.getElementById('back-to-top');
   const menuToggle = document.getElementById('menu-toggle');
   const themeToggle = document.getElementById('theme-toggle');
   const body = document.body;
   const html = document.documentElement;
+
+  // Determine current filename
+  let currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  if (currentPage === '') currentPage = 'index.html';
 
   // Theme Logic
   const setTheme = (theme) => {
@@ -56,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Highlight active section on scroll (ScrollSpy)
   const highlightSection = () => {
     let current = '';
-    const scrollPos = window.scrollY + 100;
+    const scrollPos = window.scrollY + 120;
 
     sections.forEach(section => {
       if (scrollPos >= section.offsetTop) {
@@ -64,9 +68,51 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Fallback to first section if we are at the very top
+    if (window.scrollY < 50 && sections.length > 0) {
+      current = sections[0].getAttribute('id');
+    }
+
+    // Update left sidebar active links
     navLinks.forEach(link => {
       link.classList.remove('active');
-      if (link.getAttribute('href').substring(1) === current) {
+      const href = link.getAttribute('href');
+      const linkPage = href.includes('#') ? href.split('#')[0] : href;
+      const linkHash = href.includes('#') ? href.split('#')[1] : '';
+
+      // Normalize page names
+      const normCurrent = currentPage;
+      const normLink = linkPage === '' || !linkPage ? 'index.html' : linkPage;
+
+      if (normLink === normCurrent && linkHash === current) {
+        link.classList.add('active');
+        
+        // Auto scroll left sidebar to keep active link in view
+        const parentTOC = link.closest('.toc-group');
+        if (parentTOC) {
+          const label = parentTOC.querySelector('.toc-label');
+          if (label) label.style.color = 'var(--primary)';
+        }
+      } else {
+        // Reset label colors if not active
+        const parentTOC = link.closest('.toc-group');
+        if (parentTOC) {
+          const label = parentTOC.querySelector('.toc-label');
+          const hasActiveLink = parentTOC.querySelector('ul li a.active');
+          if (label && !hasActiveLink) {
+            label.style.color = 'var(--text-light)';
+          }
+        }
+      }
+    });
+
+    // Update right sidebar active links
+    const rightLinks = document.querySelectorAll('.right-sidebar #on-this-page li a');
+    rightLinks.forEach(link => {
+      link.classList.remove('active');
+      const href = link.getAttribute('href');
+      const linkHash = href.startsWith('#') ? href.substring(1) : href.split('#')[1];
+      if (linkHash === current) {
         link.classList.add('active');
       }
     });
@@ -74,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update progress bar
     const winScroll = document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
+    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
     if (progressBar) progressBar.style.width = scrolled + "%";
 
     // Show/Hide back to top button
@@ -101,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Enhanced Copy button for code blocks
   const preBlocks = document.querySelectorAll('pre');
   preBlocks.forEach(pre => {
-    // Avoid copying copy button itself or applying to mockup console
     if (pre.closest('.cursor-agent-container')) return;
     
     const code = pre.querySelector('code');
@@ -144,6 +189,4 @@ document.addEventListener('DOMContentLoaded', () => {
     section.classList.add('fade-in-section');
     observer.observe(section);
   });
-
-
 });

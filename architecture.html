@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture &amp; Cloud - Administration Serveur Linux</title>
+  <meta name="description" content="Guide d'architecture haute disponibilité et cloud : conteneurs Docker, docker-compose, Keepalived, clustering, Ansible, Terraform et liaisons cloud hybrides.">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/script.js" defer></script>
+</head>
+
+<body>
+
+  <div id="progress-bar"></div>
+
+  <header>
+    <div class="header-left">
+      <button id="menu-toggle" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <a href="index.html" class="header-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary) !important;">
+          <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+          <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+          <line x1="6" y1="6" x2="6.01" y2="6"/>
+          <line x1="6" y1="18" x2="6.01" y2="18"/>
+        </svg>
+        <span class="header-logo-text">Linux<span>.SRE</span></span>
+      </a>
+      <span class="badge" style="margin-left: 8px;">Guide Complet</span>
+    </div>
+
+    <ul class="header-nav">
+      <li><a href="index.html#purpose">Objectif</a></li>
+      <li><a href="index.html#server-types">Serveurs</a></li>
+      <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
+      <li><a href="reference.html#interview">Quiz</a></li>
+      <li><a href="reference.html#roadmap">Roadmap</a></li>
+    </ul>
+
+    <div class="header-right">
+      <button id="theme-toggle" aria-label="Toggle Theme" title="Changer le thème">
+        <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ══ SIDEBAR GAUCHE ══ -->
+    <aside>
+      <div class="toc-group">
+        <span class="toc-label">Introduction</span>
+        <ul>
+          <li><a href="index.html#purpose">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="8" cy="8" r="6" />
+                <path d="M8 5v4M8 11v.5" stroke-linecap="round" />
+              </svg>
+              Objectif général</a></li>
+          <li><a href="index.html#server-types">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="1.5" y="3" width="13" height="3.5" rx="1" />
+                <rect x="1.5" y="8" width="13" height="3.5" rx="1" />
+                <circle cx="12" cy="4.8" r="0.9" fill="currentColor" />
+                <circle cx="12" cy="9.8" r="0.9" fill="currentColor" />
+              </svg>
+              Types de serveurs</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Revue Pratique</span>
+        <ul>
+          <li><a href="diagnostic.html#obj1">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="2" y="2" width="12" height="12" rx="1.5" />
+                <path d="M5 8h6M5 5.5h4M5 10.5h5" stroke-linecap="round" />
+              </svg>
+              1. Caractériser le serveur</a></li>
+          <li><a href="diagnostic.html#obj2">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M2 12l3-4 3 3 2-4 3 4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              2. Ressources matérielles</a></li>
+          <li><a href="diagnostic.html#obj3">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
+                <circle cx="4" cy="8" r="2.2" />
+                <circle cx="12" cy="4" r="2.2" />
+                <circle cx="12" cy="12" r="2.2" />
+                <path d="M6 7L10 5M6 9L10 11" />
+              </svg>
+              3. Explorer les apps</a></li>
+          <li><a href="diagnostic.html#obj4">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M2 3h12v10H2z" />
+                <path d="M5 6h6M5 9h4" stroke-linecap="round" />
+              </svg>
+              4. Analyser les logs</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Administration Avancée</span>
+        <ul>
+          <li><a href="admin.html#sec">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4L8 1.5z" />
+              </svg>
+              Sécurité &amp; Hardening</a></li>
+          <li><a href="admin.html#pkg">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M8 1.5l5.5 3v7l-5.5 3-5.5-3v-7l5.5-3z" />
+                <path d="M8 1.5v13M2.5 4.5L8 8l5.5-3.5" />
+              </svg>
+              Packages &amp; Dépendances</a></li>
+          <li><a href="admin.html#systemd">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="5.5" />
+                <path d="M8 4.5V8l2.5 1.5" stroke-linecap="round" />
+              </svg>
+              Systemd Avancé</a></li>
+          <li><a href="admin.html#net">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
+                <circle cx="8" cy="8" r="1.8" fill="currentColor" />
+                <circle cx="2" cy="3" r="1.5" fill="currentColor" />
+                <circle cx="14" cy="3" r="1.5" fill="currentColor" />
+                <circle cx="2" cy="13" r="1.5" fill="currentColor" />
+                <circle cx="14" cy="13" r="1.5" fill="currentColor" />
+                <path d="M3.4 4.2L6 6.5M12.6 4.2L10 6.5M3.4 11.8L6 9.5M12.6 11.8L10 9.5" />
+              </svg>
+              Réseau Avancé</a></li>
+          <li><a href="admin.html#storage">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="1.5" y="3" width="13" height="3.5" rx="1" />
+                <rect x="1.5" y="8" width="13" height="3.5" rx="1" />
+                <circle cx="12" cy="4.8" r="0.9" fill="currentColor" />
+                <circle cx="12" cy="9.8" r="0.9" fill="currentColor" />
+              </svg>
+              Stockage &amp; FS</a></li>
+          <li><a href="admin.html#monitoring">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M1 10l3-4 3 2 2-5 3 3 2-2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Monitoring</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Maintenance &amp; Gestion</span>
+        <ul>
+          <li><a href="maintenance.html#maintenance">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="2" />
+                <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4" stroke-linecap="round" />
+              </svg>
+              Maintenance planifiée</a></li>
+          <li><a href="maintenance.html#gestion">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="2" y="2" width="12" height="12" rx="1" />
+                <path d="M5 6h6M5 9h4" stroke-linecap="round" />
+              </svg>
+              Gestion technique</a></li>
+          <li><a href="maintenance.html#backup">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M3 8a5 5 0 109.9-1H11" />
+                <path d="M11 4l1 3-3 .5" stroke-linecap="round" />
+              </svg>
+              Sauvegarde &amp; PRA/PCA</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Architecture &amp; Cloud</span>
+        <ul>
+          <li><a href="architecture.html#containers">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="1" y="5" width="14" height="8" rx="1" />
+                <path d="M4 5V3.5h8V5" />
+                <path d="M5 9h2M9 9h2" stroke-linecap="round" />
+              </svg>
+              Conteneurs &amp; K8s</a></li>
+          <li><a href="architecture.html#ha">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="6" />
+                <path d="M5 8l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Haute Disponibilité</a></li>
+          <li><a href="architecture.html#iac">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4L1.5 8 4 12M12 4l2.5 4-2.5 4M9 2.5l-2 11" stroke-linecap="round" />
+              </svg>
+              Automatisation &amp; IaC</a></li>
+          <li><a href="architecture.html#cloud">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
+                <path d="M13 9.5a2.5 2.5 0 10-3-4.3A3 3 0 003 8.5h9.5" />
+              </svg>
+              Cloud &amp; Hybride</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Performance &amp; Debug</span>
+        <ul>
+          <li><a href="performance.html#perf">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="3" />
+                <path d="M8 1v2M8 13v2M1 8h2M13 8h2" stroke-linecap="round" />
+              </svg>
+              Performance &amp; Tuning</a></li>
+          <li><a href="performance.html#debug">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="5.5" />
+                <path d="M8 5v3.5l2 1.5" stroke-linecap="round" />
+              </svg>
+              Dépannage Avancé</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Nouvelles Pratiques</span>
+        <ul>
+          <li><a href="pratiques.html#sre">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="5.5" />
+                <path d="M5 8l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              SRE &amp; Fiabilité</a></li>
+          <li><a href="pratiques.html#gitops">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="4" cy="4" r="2" />
+                <circle cx="12" cy="4" r="2" />
+                <circle cx="8" cy="12" r="2" />
+                <path d="M4 6v2a4 4 0 004 4M12 6v-1a2 2 0 00-2-2H6" />
+              </svg>
+              GitOps &amp; CI/CD</a></li>
+          <li><a href="pratiques.html#devsecops">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4L8 1.5z" />
+              </svg>
+              DevSecOps</a></li>
+          <li><a href="pratiques.html#platform">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="1" y="5" width="14" height="8" rx="1" />
+                <path d="M4 5V3.5h8V5" />
+              </svg>
+              Platform Engineering</a></li>
+          <li><a href="pratiques.html#finops">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="6" />
+                <path d="M8 4v8M6 6h3a1 1 0 010 2H6M6 8h4" stroke-linecap="round" />
+              </svg>
+              FinOps</a></li>
+          <li><a href="pratiques.html#observability">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M1 10l3-4 3 2 2-5 3 3 2-2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Observabilité avancée</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Kubernetes ⎈</span>
+        <ul>
+          <li><a href="kubernetes.html#cmds">Commandes kubectl</a></li>
+          <li><a href="kubernetes.html#yaml">Exemples YAML</a></li>
+          <li><a href="kubernetes.html#vs">K8s vs Docker</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Référence</span>
+        <ul>
+          <li><a href="reference.html#interview">Entretiens / Quiz</a></li>
+          <li><a href="reference.html#roadmap">Feuille de route</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ══ MAIN CONTENT ══ -->
+    <main>
+
+      <div class="breadcrumb">Docs <span>›</span> Architecture <span>›</span> Cloud &amp; Conteneurs</div>
+      <h1 class="display-mega">Architecture &amp; Cloud</h1>
+      <p class="subtitle" style="font-size: 18px; margin-bottom: 24px;">
+        Conception d'infrastructures résilientes, élastiques, conteneurisées et pilotées par le code (IaC).
+      </p>
+
+      <div class="page-meta" style="margin-bottom: 40px;">
+        <span class="page-meta-item">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="8" cy="8" r="6" />
+            <path d="M8 4.5V8l2.5 1.5" stroke-linecap="round" />
+          </svg>
+          ~12 min de lecture
+        </span>
+        <span class="page-meta-item">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4z" />
+          </svg>
+          Architecte Cloud / DevOps
+        </span>
+        <span class="page-meta-item"><span class="badge">Mis à jour Mai 2026</span></span>
+      </div>
+
+      <div class="page-banner-container">
+        <img src="img/architecture_hero.jpg" alt="Administration Serveur Linux - Architecture &amp; Cloud" class="page-banner">
+      </div>
+
+      <!-- ══════════ SECTION: CONTENEURS ══════════ -->
+      <section id="containers">
+        <div class="section-header">
+          <div class="section-icon blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+              <path
+                d="M13.983 11.078h2.119c.102 0 .186-.084.186-.186V9.086a.186.186 0 0 0-.186-.186h-2.119c-.102 0-.186.084-.186.186v1.806c0 .102.084.186.186.186zM11.233 11.078h2.119c.102 0 .186-.084.186-.186V9.086a.186.186 0 0 0-.186-.186h-2.119c-.102 0-.186.084-.186.186v1.806c0 .102.084.186.186.186zM11.233 8.358h2.119c.102 0 .186-.084.186-.186V6.366a.186.186 0 0 0-.186-.186h-2.119c-.102 0-.186.084-.186.186v1.806c0 .102.084.186.186.186zM8.477 11.078h2.119c.102 0 .186-.084.186-.186V9.086a.186.186 0 0 0-.186-.186H8.477c-.102 0-.186.084-.186.186v1.806c0 .102.084.186.186.186zM8.477 8.358h2.119c.102 0 .186-.084.186-.186V6.366a.186.186 0 0 0-.186-.186H8.477c-.102 0-.186.084-.186.186v1.806c0 .102.084.186.186.186zM5.722 11.078h2.119c.102 0 .186-.084.186-.186V9.086a.186.186 0 0 0-.186-.186H5.722c-.102 0-.186.084-.186.186v1.806c0 .102.084.186.186.186zM2.966 11.078H5.08c.103 0 .186-.084.186-.186V9.086a.186.186 0 0 0-.186-.186H2.966c-.102 0-.186.084-.186.186v1.806c0 .102.084.186.186.186zM5.722 8.358h2.119c.102 0 .186-.084.186-.186V6.366a.186.186 0 0 0-.186-.186H5.722c-.102 0-.186.084-.186.186v1.806c0 .102.084.186.186.186zM11.233 5.617h2.119c.102 0 .186-.084.186-.186V3.625a.186.186 0 0 0-.186-.186h-2.119c-.102 0-.186.084-.186.186v1.806c0 .102.084.186.186.186zM23.955 12.185c-.328-.567-.847-1.041-1.531-1.391a9.388 9.388 0 0 0-4.47-1.066h-.414c-.066-.414-.143-.842-.234-1.278l-.133-.562-.486-.316c-.347-.225-.76-.388-1.201-.482v-.001h-.001c-.143-.031-.295-.054-.448-.069l-.364-.035-.119-.347c-.157-.458-.415-.875-.767-1.231C13.437 5.035 12.83 4.7 12.164 4.5l-.545-.164-.265.498a4.341 4.341 0 0 0-.462 1.34c-.015.105-.027.21-.035.316l-.014.22h-.24c-.007-.001-.013-.001-.02-.001-.016 0-.03.001-.046.001h-.24v2.118H.102c-.056 0-.102.046-.102.102v3.705c0 .056.046.102.102.102h12.502c.056 0 .102-.046.102-.102V12.11c.216.513.565 1.018 1.031 1.503.715.744 1.769 1.332 3.132 1.751 1.761.542 4.025.597 5.485-.758.117-.11.218-.227.31-.346.438.163.858.212 1.254.14.346-.062.66-.21.93-.44.256-.218.455-.522.585-.898.026-.073.045-.147.06-.223a.138.138 0 0 0-.03-.13l-.001-.001a.141.141 0 0 0-.102-.041h-.001z" />
+            </svg>
+          </div>
+          <h2>Docker &amp; Conteneurs</h2>
+        </div>
+        <p>Isolation applicative légère. Docker permet de packager une application et ses dépendances dans une image
+          immuable.</p>
+
+        <div class="two-col">
+          <div class="card">
+            <h4>Workflow Docker</h4>
+            <ul class="list">
+              <li><strong>Build</strong> : Créer une image via un Dockerfile</li>
+              <li><strong>Ship</strong> : Stocker sur un Registry (Docker Hub)</li>
+              <li><strong>Run</strong> : Instancier un conteneur partout</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Commandes Essentielles</h4>
+            <pre><code><span class="c-prompt">#</span> <span class="c-keyword">docker</span> build -t myapp .
+<span class="c-prompt">#</span> <span class="c-keyword">docker</span> run -d -p 80:80 myapp
+<span class="c-prompt">#</span> <span class="c-keyword">docker</span> exec -it myapp sh
+<span class="c-prompt">#</span> <span class="c-keyword">docker</span> network ls</code></pre>
+          </div>
+        </div>
+
+        <h3>Docker Compose Avancé</h3>
+        <pre class="yaml"><code><span class="y-comment"># docker-compose.yml</span>
+<span class="y-key">version:</span> <span class="y-str">"3.9"</span>
+<span class="y-key">services:</span>
+  <span class="y-key">backend:</span>
+    <span class="y-key">build:</span> <span class="y-str">./api</span>
+    <span class="y-key">environment:</span>
+      - <span class="y-key">DATABASE_URL:</span> <span class="y-str">postgres://user:pass@db:5432/db</span>
+    <span class="y-key">depends_on:</span>
+      - <span class="y-str">db</span>
+  <span class="y-key">db:</span>
+    <span class="y-key">image:</span> <span class="y-str">postgres:15-alpine</span>
+    <span class="y-key">volumes:</span>
+      - <span class="y-str">pgdata:/var/lib/postgresql/data</span>
+
+<span class="y-key">volumes:</span>
+  <span class="y-key">pgdata:</span></code></pre>
+
+        <h3 style="margin-top: 30px;">🐳 Dockerfile de Production Optimisé &amp; Sécurisé</h3>
+        <p>Ce patron de conception applique les meilleures pratiques de sécurité et d'optimisation (multi-stage builds, utilisateur non-root, cache de dépendances, et réduction des couches d'image) :</p>
+        
+        <pre class="yaml"><code><span class="y-comment"># ── ÉTAPE 1 : CONSTRUIRE (Builder) ──</span>
+<span class="y-key">FROM</span> <span class="y-str">node:20.12.0-alpine3.19 AS builder</span>
+<span class="y-key">WORKDIR</span> <span class="y-str">/app</span>
+
+<span class="y-comment"># Copier les fichiers de dépendances en premier pour maximiser l'utilisation du cache Docker</span>
+<span class="y-key">COPY</span> <span class="y-str">package.json package-lock.json ./</span>
+<span class="y-key">RUN</span> <span class="y-str">npm ci --silent</span>
+
+<span class="y-comment"># Copier le code source de l'application et compiler</span>
+<span class="y-key">COPY</span> <span class="y-str">. .</span>
+<span class="y-key">RUN</span> <span class="y-str">npm run build</span>
+
+<span class="y-comment"># ── ÉTAPE 2 : EXÉCUTER (Runtime minimal) ──</span>
+<span class="y-key">FROM</span> <span class="y-str">node:20.12.0-alpine3.19 AS runner</span>
+<span class="y-key">WORKDIR</span> <span class="y-str">/app</span>
+
+<span class="y-comment"># Définir l'environnement de production</span>
+<span class="y-key">ENV</span> <span class="y-str">NODE_ENV=production</span>
+
+<span class="y-comment"># Sécurité : Création d'un groupe et d'un utilisateur non-root (évite l'élévation de privilèges)</span>
+<span class="y-key">RUN</span> <span class="y-str">addgroup -S nodeapp && adduser -S nodeuser -G nodeapp</span>
+
+<span class="y-comment"># Récupérer UNIQUEMENT les fichiers compilés du Builder (réduit la taille de l'image finale)</span>
+<span class="y-key">COPY</span> <span class="y-str">--from=builder --chown=nodeuser:nodeapp /app/dist ./dist</span>
+<span class="y-key">COPY</span> <span class="y-str">--from=builder --chown=nodeuser:nodeapp /app/package.json /app/package-lock.json ./</span>
+
+<span class="y-comment"># Installer uniquement les dépendances de production</span>
+<span class="y-key">RUN</span> <span class="y-str">npm ci --only=production --silent</span>
+
+<span class="y-comment"># Basculer vers l'utilisateur non-privilégié</span>
+<span class="y-key">USER</span> <span class="y-str">nodeuser</span>
+
+<span class="y-key">EXPOSE</span> <span class="y-str">3000</span>
+<span class="y-key">CMD</span> <span class="y-str">["node", "dist/index.js"]</span></code></pre>
+      </section>
+
+      <!-- ══════════ SECTION: HA ══════════ -->
+      <section id="ha">
+        <div class="section-header">
+          <div class="section-icon green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+          </div>
+          <h2>Haute Disponibilité (High Availability)</h2>
+        </div>
+        <p>Éliminer les points de défaillance uniques (SPOF) garantit qu'aucune panne d'un composant isolé ne peut interrompre le service. La haute disponibilité repose sur trois piliers : la redondance, le basculement automatique et la réplication des données.</p>
+        
+        <div class="server-grid">
+          <div class="server-card">
+            <h4>Keepalived / VIP</h4>
+            <p>Keepalived utilise le protocole VRRP pour faire flotter une IP virtuelle (VIP) entre deux nœuds. Si le nœud primaire devient inaccessible, le secondaire prend automatiquement l'IP en moins d'une seconde.</p>
+            <pre><code><span class="c-prompt">#</span> apt install keepalived
+<span class="c-prompt">#</span> systemctl enable --now keepalived
+<span class="c-prompt">#</span> ip addr show  <span class="c-comment"># vérifier la VIP active</span></code></pre>
+          </div>
+          <div class="server-card">
+            <h4>Réplication de BDD</h4>
+            <p>La réplication en streaming de PostgreSQL envoie chaque transaction du nœud primaire vers un standby. En cas de panne, une promotion automatique (Patroni) rend le standby opérationnel.</p>
+            <pre><code><span class="c-prompt">#</span> pg_basebackup -h primary -D /data -P -Xs -R
+<span class="c-prompt">#</span> patronictl failover cluster --master primary</code></pre>
+          </div>
+        </div>
+
+        <div class="note info">
+          <strong>Règle d'or HA :</strong> Testez votre basculement en production planifiée avant qu'il arrive en urgence. Un failover non testé est un failover qui échoue au pire moment.
+        </div>
+
+        <div class="card" style="margin-top: 20px;">
+          <h4>Checklist SPOF</h4>
+          <ul style="margin-left: 20px; margin-top: 10px;">
+            <li><strong>Load Balancer :</strong> 2 nœuds en actif/passif (Keepalived)</li>
+            <li><strong>Base de données :</strong> primaire + au moins 1 réplica</li>
+            <li><strong>Stockage :</strong> RAID logiciel (mdadm) ou volume distribué (Ceph)</li>
+            <li><strong>Réseau :</strong> 2 interfaces en bonding (mode active-backup ou LACP)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ══════════ SECTION: IAC ══════════ -->
+      <section id="iac">
+        <div class="section-header">
+          <div class="section-icon purple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M4 17l6-6-6-6M12 19h8" /></svg>
+          </div>
+          <h2>Automatisation &amp; IaC</h2>
+        </div>
+        <p>Traiter l'infrastructure comme du code signifie que chaque serveur, réseau et règle de firewall est décrit dans un fichier versionné dans Git. L'environnement devient reproductible et auditable.</p>
+        
+        <div class="two-col">
+          <div class="card">
+            <h4>Terraform (Provisioning)</h4>
+            <p>Terraform déclare les ressources cloud dans des fichiers .tf. Il calcule un plan d'exécution avant d'appliquer les changements.</p>
+            <pre><code><span class="c-prompt">#</span> terraform plan  <span class="c-comment"># prévisualiser</span>
+<span class="c-prompt">#</span> terraform apply <span class="c-comment"># appliquer</span></code></pre>
+          </div>
+          <div class="card">
+            <h4>Ansible (Configuration)</h4>
+            <p>Ansible configure les serveurs sans agent via SSH. Les playbooks YAML sont idempotents : parfaits pour le hardening et les mises à jour.</p>
+            <pre><code><span class="c-prompt">#</span> ansible-playbook -i hosts site.yml
+<span class="c-prompt">#</span> ansible all -m ping</code></pre>
+          </div>
+        </div>
+
+        <div class="server-card" style="margin-top: 20px;">
+          <h4>Packer (Golden Images)</h4>
+          <p>Packer crée des images machine immuables (AMI, QCOW2) préconfigurées. On démarre directement depuis une image déjà durcie et testée.</p>
+        </div>
+
+        <div class="callout info">
+          <strong>Ordre recommandé :</strong> Packer construit l'image ➜ Terraform provisionne les instances ➜ Ansible finalise la configuration applicative.
+        </div>
+
+        <h3 style="margin-top: 30px;">⚙️ Configuration SRE de Terraform : Remote Backend &amp; Lock</h3>
+        <p>Pour collaborer de manière sécurisée en équipe sans risquer d'écraser des ressources ou de corrompre le fichier d'état (<code>terraform.tfstate</code>), utilisez un backend distant sécurisé. Cette configuration utilise la **nouvelle fonctionnalité native de locking S3** de Terraform 1.10+ (sans nécessiter de table DynamoDB externe) :</p>
+        
+        <pre class="yaml"><code><span class="y-comment"># backend.tf</span>
+<span class="y-key">terraform</span> {
+  <span class="y-key">required_version</span> = <span class="y-str">">= 1.10.0"</span>
+
+  <span class="y-key">required_providers</span> = {
+    <span class="y-key">aws</span> = {
+      <span class="y-key">source</span>  = <span class="y-str">"hashicorp/aws"</span>
+      <span class="y-key">version</span> = <span class="y-str">"~> 5.0"</span>
+    }
+  }
+
+  <span class="y-comment"># Configuration du stockage d'état sécurisé et du verrouillage (State Locking)</span>
+  <span class="y-key">backend</span> <span class="y-str">"s3"</span> {
+    <span class="y-key">bucket</span>         = <span class="y-str">"company-sre-terraform-state"</span>
+    <span class="y-key">key</span>            = <span class="y-str">"production/vpc-and-compute.tfstate"</span>
+    <span class="y-key">region</span>         = <span class="y-str">"eu-west-3"</span>  <span class="y-comment"># Paris</span>
+    
+    <span class="y-comment"># Sécurité & Intégrité</span>
+    <span class="y-key">encrypt</span>        = <span class="y-str">true</span>  <span class="y-comment"># Chiffrement à l'état de repos (AES-256)</span>
+    
+    <span class="y-comment"># Nouveau standard Terraform 1.10+ : Verrouillage natif via fichier S3</span>
+    <span class="y-key">use_lockfile</span>   = <span class="y-str">true</span>  <span class="y-comment"># Élimine le besoin d'une table DynamoDB tierce</span>
+  }
+}</code></pre>
+
+        <div class="note info" style="margin-top: 15px;">
+          <strong>Bonne pratique SecOps :</strong> Ne commitez jamais les fichiers de statut locaux (<code>.tfstate</code>) dans Git. Ils contiennent des secrets et des mots de passe d'infrastructure en clair. Ajoutez-les systématiquement à votre <code>.gitignore</code>.
+        </div>
+      </section>
+
+      <!-- ══════════ SECTION: CLOUD ══════════ -->
+      <section id="cloud">
+        <div class="section-header">
+          <div class="section-icon cyan">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M17.5 19a3.5 3.5 0 000-7h-1.5a7 7 0 10-12 5" /></svg>
+          </div>
+          <h2>Cloud &amp; Hybride</h2>
+        </div>
+        <p>L'approche hybride combine infrastructure on-premise et services cloud managés pour exploiter l'élasticité tout en gardant le contrôle.</p>
+        
+        <div class="server-grid">
+          <div class="server-card">
+            <h4>Les trois modèles</h4>
+            <p><strong>IaaS :</strong> vous gérez l'OS (EC2, Compute Engine).<br><strong>PaaS :</strong> provider gère l'OS (Heroku, App Service).<br><strong>SaaS :</strong> clé en main (RDS, BigQuery).</p>
+          </div>
+          <div class="server-card">
+            <h4>Connectivité Hybride</h4>
+            <p>Utilisez un VPN IPSec ou une liaison privée dédiée (Direct Connect, ExpressRoute) pour une latence prévisible et sécurisée.</p>
+          </div>
+        </div>
+
+        <div class="note info">
+          <strong>Bonne pratique :</strong> Préférer des services ouverts (PostgreSQL RDS) pour éviter le <em>vendor lock-in</em> et versionner toute l'infra dans Git.
+        </div>
+
+        <div class="card" style="margin-top: 24px; border-left: 3px solid var(--primary);">
+          <h4>☁️ Références d'Architecture &amp; IaC</h4>
+          <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
+            <li style="margin-bottom: 8px;"><a href="https://aws.amazon.com/architecture/well-architected/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">AWS Well-Architected Framework</a> — Piliers de fiabilité, performance, sécurité et optimisation des coûts.</li>
+            <li style="margin-bottom: 8px;"><a href="https://registry.terraform.io/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Terraform Registry</a> — Catalogue de modules réutilisables et providers IaC validés par HashiCorp.</li>
+            <li style="margin-bottom: 8px;"><strong>Designing Distributed Systems</strong> — <em>Brendan Burns</em> — Patrons de conception et architectures pour les systèmes distribués cloud-native.</li>
+            <li style="margin-bottom: 8px;"><strong>Infrastructure as Code</strong> — <em>Kief Morris</em> — Guide de référence absolue pour les concepts Terraform et Ansible.</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ══ SIDEBAR DROITE ══ -->
+    <aside class="right-sidebar">
+      <div class="toc-group">
+        <span class="toc-label">Sur cette page</span>
+        <ul id="on-this-page">
+          <li><a href="#containers">Docker &amp; Conteneurs</a></li>
+          <li><a href="#ha">Haute Disponibilité</a></li>
+          <li><a href="#iac">Automatisation &amp; IaC</a></li>
+          <li><a href="#cloud">Cloud &amp; Hybride</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Statut du Guide</span>
+        <div class="status-card">
+          <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
+          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~12 min</span></div>
+          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Architecte</span></div>
+          <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
+        </div>
+      </div>
+      <div class="toc-group" style="margin-top:20px">
+        <span class="toc-label">Distributions couvertes</span>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px">
+          <span class="tag tag-orange">Ubuntu</span>
+          <span class="tag tag-red">RHEL</span>
+          <span class="tag tag-blue">Debian</span>
+          <span class="tag tag-cyan">Alpine</span>
+          <span class="tag tag-green">Rocky</span>
+          <span class="tag tag-gray">Arch</span>
+        </div>
+      </div>
+    </aside>
+
+  </div><!-- /.layout -->
+
+  <footer>
+    Tous types de serveurs, maintenance, SRE, GitOps, DevSecOps — © 2026
+  </footer>
+
+  <button id="back-to-top" title="Retour en haut">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
+  </button>
+
+</body>
+
+</html>
