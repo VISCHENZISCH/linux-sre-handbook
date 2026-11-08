@@ -3,10 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nouvelles Pratiques - Administration Serveur Linux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Nouvelles Pratiques - Bastion</title>
   <meta name="description" content="Guide des nouvelles pratiques DevOps et SRE : budgets d'erreurs, GitOps ArgoCD, DevSecOps shift-left, Platform Engineering IDP, FinOps et piliers d'observabilité.">
   <link rel="stylesheet" href="css/main.css">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)">
+  <script>try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <script src="js/script.js" defer></script>
 </head>
 
@@ -31,9 +34,9 @@
           <line x1="6" y1="6" x2="6.01" y2="6"/>
           <line x1="6" y1="18" x2="6.01" y2="18"/>
         </svg>
-        <span class="header-logo-text">Linux<span>.SRE</span></span>
+        <span class="header-logo-text">Bastion<span>.</span></span>
       </a>
-      <span class="badge" style="margin-left: 8px;">Guide Complet</span>
+      <span class="badge">Sysadmin · SRE · SOC</span>
     </div>
 
     <ul class="header-nav">
@@ -42,6 +45,7 @@
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview">Quiz</a></li>
       <li><a href="reference.html#roadmap">Roadmap</a></li>
+      <li><a href="ressources.html">Ressources</a></li>
     </ul>
 
     <div class="header-right">
@@ -260,7 +264,7 @@
         </ul>
       </div>
       <div class="toc-group">
-        <span class="toc-label">Kubernetes ⎈</span>
+        <span class="toc-label">Kubernetes</span>
         <ul>
           <li><a href="kubernetes.html#cmds">Commandes kubectl</a></li>
           <li><a href="kubernetes.html#yaml">Exemples YAML</a></li>
@@ -272,6 +276,8 @@
         <ul>
           <li><a href="reference.html#interview">Entretiens / Quiz</a></li>
           <li><a href="reference.html#roadmap">Feuille de route</a></li>
+          <li><a href="ressources.html#linux">Ressources d'apprentissage</a></li>
+          <li><a href="ressources.html#labs">Labs pratiques</a></li>
         </ul>
       </div>
     </aside>
@@ -303,7 +309,7 @@
       </div>
 
       <div class="page-banner-container">
-        <img src="img/pratiques_hero.jpg" alt="Administration Serveur Linux - Nouvelles Pratiques" class="page-banner">
+        <img src="img/pratiques_hero.svg" alt="Nouvelles Pratiques" class="page-banner">
       </div>
 
       <!-- ══════════ SECTION: SRE ══════════ -->
@@ -333,7 +339,7 @@
         </div>
 
         <div class="card" style="margin-top: 24px; border-left: 3px solid var(--accent);">
-          <h4>🧮 Méthode de Calcul du Budget d'Erreur (Error Budget)</h4>
+          <h4>Méthode de Calcul du Budget d'Erreur (Error Budget)</h4>
           <p style="font-size: 13.5px; margin-top: 8px;">Le budget d'erreur se calcule directement selon la formule suivante :</p>
           <pre style="background: rgba(var(--primary-rgb), 0.05); padding: 12px; border-radius: 6px; margin: 10px 0; font-family: monospace; font-size: 14px; text-align: center;"><strong>Budget d'Erreur = 100% - SLO</strong></pre>
           
@@ -382,7 +388,7 @@
         </div>
         <p>Git est l'unique source de vérité pour l'infrastructure déclarative.</p>
         <div class="arch-box">
-          Code Push ➜ Git Repository ➜ ArgoCD Operator ➜ Kubernetes Auto-Sync
+          Code Push → Git Repository → ArgoCD Operator → Kubernetes Auto-Sync
         </div>
         <div class="note info">
           <strong>Principe Clé</strong> : Réconciliation continue automatique entre l'état décrit dans Git et l'état
@@ -478,7 +484,7 @@
         <div class="two-col">
           <div class="card">
             <h4>Les 3 piliers</h4>
-            <p><strong>Métriques</strong> (données agrégées) ➜ <strong>Logs</strong> (événements contextualisés) ➜ <strong>Traces</strong> (cheminement des requêtes distribuées).</p>
+            <p><strong>Métriques</strong> (données agrégées) → <strong>Logs</strong> (événements contextualisés) → <strong>Traces</strong> (cheminement des requêtes distribuées).</p>
           </div>
           <div class="card">
             <h4>APM &amp; Profiling en continu</h4>
@@ -487,57 +493,22 @@
         </div>
 
         <div class="card" style="margin-top: 24px; border-left: 3px solid var(--primary);">
-          <h4>🔄 Références DevOps, GitOps &amp; DevSecOps</h4>
+          <h4>Références DevOps, GitOps &amp; DevSecOps</h4>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><a href="https://argo-cd.readthedocs.io/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">ArgoCD Docs</a> &amp; <a href="https://fluxcd.io/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">FluxCD</a> — Outils leaders de réconciliation GitOps continue.</li>
-            <li style="margin-bottom: 8px;"><a href="https://slsa.dev/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">SLSA Framework</a> — Normes de sécurité de la chaîne d'approvisionnement logicielle (Software Supply Chain).</li>
-            <li style="margin-bottom: 8px;"><a href="https://github.com/aquasecurity/trivy" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Trivy (AquaSecurity)</a> — Outil de référence pour scanner les CVE dans les images de conteneurs et fichiers IaC.</li>
-            <li style="margin-bottom: 8px;"><a href="https://www.finops.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">FinOps Foundation</a> — Cadres et bonnes pratiques mondiales pour la gestion des coûts cloud.</li>
+            <li style="margin-bottom: 8px;"><a href="https://argo-cd.readthedocs.io/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">ArgoCD Docs</a> &amp; <a href="https://fluxcd.io/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">FluxCD</a> - Outils leaders de réconciliation GitOps continue.</li>
+            <li style="margin-bottom: 8px;"><a href="https://slsa.dev/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">SLSA Framework</a> - Normes de sécurité de la chaîne d'approvisionnement logicielle (Software Supply Chain).</li>
+            <li style="margin-bottom: 8px;"><a href="https://github.com/aquasecurity/trivy" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Trivy (AquaSecurity)</a> - Outil de référence pour scanner les CVE dans les images de conteneurs et fichiers IaC.</li>
+            <li style="margin-bottom: 8px;"><a href="https://www.finops.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">FinOps Foundation</a> - Cadres et bonnes pratiques mondiales pour la gestion des coûts cloud.</li>
           </ul>
         </div>
       </section>
 
     </main>
 
-    <!-- ══ SIDEBAR DROITE ══ -->
-    <aside class="right-sidebar">
-      <div class="toc-group">
-        <span class="toc-label">Sur cette page</span>
-        <ul id="on-this-page">
-          <li><a href="#sre">SRE &amp; Fiabilité</a></li>
-          <li><a href="#gitops">GitOps &amp; CI/CD</a></li>
-          <li><a href="#devsecops">DevSecOps</a></li>
-          <li><a href="#platform">Platform Eng.</a></li>
-          <li><a href="#finops">FinOps</a></li>
-          <li><a href="#observability">Observabilité</a></li>
-        </ul>
-      </div>
-      <div class="toc-group">
-        <span class="toc-label">Statut du Guide</span>
-        <div class="status-card">
-          <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~15 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">DevOps / SRE</span></div>
-          <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
-        </div>
-      </div>
-      <div class="toc-group" style="margin-top:20px">
-        <span class="toc-label">Distributions couvertes</span>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px">
-          <span class="tag tag-orange">Ubuntu</span>
-          <span class="tag tag-red">RHEL</span>
-          <span class="tag tag-blue">Debian</span>
-          <span class="tag tag-cyan">Alpine</span>
-          <span class="tag tag-green">Rocky</span>
-          <span class="tag tag-gray">Arch</span>
-        </div>
-      </div>
-    </aside>
-
   </div><!-- /.layout -->
 
   <footer>
-    Tous types de serveurs, maintenance, SRE, GitOps, DevSecOps — © 2026
+    Bastion - Handbook Sysadmin, SRE &amp; SOC - © 2026
   </footer>
 
   <button id="back-to-top" title="Retour en haut">

@@ -3,10 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Revue Pratique &amp; Diagnostic - Administration Serveur Linux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Revue Pratique &amp; Diagnostic - Bastion</title>
   <meta name="description" content="Guide pratique de diagnostic serveur Linux : caractériser les services, monitorer CPU/RAM/IO, explorer les applications et lire les logs.">
   <link rel="stylesheet" href="css/main.css">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)">
+  <script>try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <script src="js/script.js" defer></script>
 </head>
 
@@ -31,9 +34,9 @@
           <line x1="6" y1="6" x2="6.01" y2="6"/>
           <line x1="6" y1="18" x2="6.01" y2="18"/>
         </svg>
-        <span class="header-logo-text">Linux<span>.SRE</span></span>
+        <span class="header-logo-text">Bastion<span>.</span></span>
       </a>
-      <span class="badge" style="margin-left: 8px;">Guide Complet</span>
+      <span class="badge">Sysadmin · SRE · SOC</span>
     </div>
 
     <ul class="header-nav">
@@ -42,6 +45,7 @@
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview">Quiz</a></li>
       <li><a href="reference.html#roadmap">Roadmap</a></li>
+      <li><a href="ressources.html">Ressources</a></li>
     </ul>
 
     <div class="header-right">
@@ -260,7 +264,7 @@
         </ul>
       </div>
       <div class="toc-group">
-        <span class="toc-label">Kubernetes ⎈</span>
+        <span class="toc-label">Kubernetes</span>
         <ul>
           <li><a href="kubernetes.html#cmds">Commandes kubectl</a></li>
           <li><a href="kubernetes.html#yaml">Exemples YAML</a></li>
@@ -272,6 +276,8 @@
         <ul>
           <li><a href="reference.html#interview">Entretiens / Quiz</a></li>
           <li><a href="reference.html#roadmap">Feuille de route</a></li>
+          <li><a href="ressources.html#linux">Ressources d'apprentissage</a></li>
+          <li><a href="ressources.html#labs">Labs pratiques</a></li>
         </ul>
       </div>
     </aside>
@@ -303,7 +309,7 @@
       </div>
 
       <div class="page-banner-container">
-        <img src="img/diagnostic_hero.jpg" alt="Administration Serveur Linux - Diagnostic &amp; Ressources" class="page-banner">
+        <img src="img/diagnostic_hero.svg" alt="Diagnostic &amp; Ressources" class="page-banner">
       </div>
 
       <!-- ══════════ SECTION: 01 CARACTÉRISER ══════════ -->
@@ -390,7 +396,7 @@ tcp    0.0.0.0:8000        LISTEN  885/haproxy</code></pre>
         </div>
         <p>Comprendre l'interaction entre les différents services installés (Systemd, Docker, scripts).</p>
         <div class="arch-box">
-          Client ➜ HAProxy (:8000) ➜ Webapp Python (:9000) ➜ PostgreSQL (:5432)
+          Client → HAProxy (:8000) → Webapp Python (:9000) → PostgreSQL (:5432)
         </div>
         <pre><code><span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">sudo</span> systemctl status webapp
 <span class="c-prompt">admin@srv:~$</span> <span class="c-keyword">docker</span> ps -a
@@ -449,52 +455,18 @@ tcp    0.0.0.0:8000        LISTEN  885/haproxy</code></pre>
           </h4>
           <p style="font-size: 13px; margin-top: 8px;">Pour vous entraîner sur de vrais incidents de production Linux dans un environnement sécurisé et interactif :</p>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><a href="https://sadservers.com/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">SadServers</a> — Résolution d'incidents réels sur des serveurs Linux (scénarios de CPU saturés, disques pleins, sockets perdues).</li>
-            <li style="margin-bottom: 8px;"><a href="http://tldp.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">The Linux Documentation Project (TLDP)</a> — Guides complets d'administration système et réseaux.</li>
+            <li style="margin-bottom: 8px;"><a href="https://sadservers.com/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">SadServers</a> - Résolution d'incidents réels sur des serveurs Linux (scénarios de CPU saturés, disques pleins, sockets perdues).</li>
+            <li style="margin-bottom: 8px;"><a href="http://tldp.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">The Linux Documentation Project (TLDP)</a> - Guides complets d'administration système et réseaux.</li>
           </ul>
         </div>
       </section>
 
     </main>
 
-    <!-- ══ SIDEBAR DROITE ══ -->
-    <aside class="right-sidebar">
-      <div class="toc-group">
-        <span class="toc-label">Sur cette page</span>
-        <ul id="on-this-page">
-          <li><a href="#obj1">1. Caractériser</a></li>
-          <li><a href="#obj2">2. Ressources</a></li>
-          <li><a href="#obj3">3. Explorer apps</a></li>
-          <li><a href="#obj4">4. Analyser logs</a></li>
-          <li><a href="#diag-pro">Diagnostic Crise</a></li>
-        </ul>
-      </div>
-      <div class="toc-group">
-        <span class="toc-label">Statut du Guide</span>
-        <div class="status-card">
-          <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~10 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Sysadmin / SRE</span></div>
-          <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
-        </div>
-      </div>
-      <div class="toc-group" style="margin-top:20px">
-        <span class="toc-label">Distributions couvertes</span>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px">
-          <span class="tag tag-orange">Ubuntu</span>
-          <span class="tag tag-red">RHEL</span>
-          <span class="tag tag-blue">Debian</span>
-          <span class="tag tag-cyan">Alpine</span>
-          <span class="tag tag-green">Rocky</span>
-          <span class="tag tag-gray">Arch</span>
-        </div>
-      </div>
-    </aside>
-
   </div><!-- /.layout -->
 
   <footer>
-    Tous types de serveurs, maintenance, SRE, GitOps, DevSecOps — © 2026
+    Bastion - Handbook Sysadmin, SRE &amp; SOC - © 2026
   </footer>
 
   <button id="back-to-top" title="Retour en haut">

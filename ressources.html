@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ressources d'apprentissage - Bastion</title>
+  <meta name="description" content="Ressources d'apprentissage classées : Linux, Docker, Kubernetes, CI/CD, DevSecOps, outils de scan, labs pratiques et SOC.">
+  <link class="variables" rel="stylesheet" href="css/main.css">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)">
+  <script>try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <script src="js/script.js" defer></script>
+</head>
+
+<body>
+
+  <div id="progress-bar"></div>
+
+  <header>
+    <div class="header-left">
+      <button id="menu-toggle" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <a href="index.html" class="header-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary) !important;">
+          <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+          <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+          <line x1="6" y1="6" x2="6.01" y2="6"/>
+          <line x1="6" y1="18" x2="6.01" y2="18"/>
+        </svg>
+        <span class="header-logo-text">Bastion<span>.</span></span>
+      </a>
+      <span class="badge">Sysadmin · SRE · SOC</span>
+    </div>
+
+    <ul class="header-nav">
+      <li><a href="index.html#purpose">Objectif</a></li>
+      <li><a href="index.html#server-types">Serveurs</a></li>
+      <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
+      <li><a href="reference.html#interview" class="active">Quiz</a></li>
+      <li><a href="reference.html#roadmap">Roadmap</a></li>
+      <li><a href="ressources.html">Ressources</a></li>
+    </ul>
+
+    <div class="header-right">
+      <button id="theme-toggle" aria-label="Toggle Theme" title="Changer le thème">
+        <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ══ SIDEBAR GAUCHE ══ -->
+    <aside>
+      <div class="toc-group">
+        <span class="toc-label">Introduction</span>
+        <ul>
+          <li><a href="index.html#purpose">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="8" cy="8" r="6" />
+                <path d="M8 5v4M8 11v.5" stroke-linecap="round" />
+              </svg>
+              Objectif général</a></li>
+          <li><a href="index.html#server-types">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="1.5" y="3" width="13" height="3.5" rx="1" />
+                <rect x="1.5" y="8" width="13" height="3.5" rx="1" />
+                <circle cx="12" cy="4.8" r="0.9" fill="currentColor" />
+                <circle cx="12" cy="9.8" r="0.9" fill="currentColor" />
+              </svg>
+              Types de serveurs</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Revue Pratique</span>
+        <ul>
+          <li><a href="diagnostic.html#obj1">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="2" y="2" width="12" height="12" rx="1.5" />
+                <path d="M5 8h6M5 5.5h4M5 10.5h5" stroke-linecap="round" />
+              </svg>
+              1. Caractériser le serveur</a></li>
+          <li><a href="diagnostic.html#obj2">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M2 12l3-4 3 3 2-4 3 4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              2. Ressources matérielles</a></li>
+          <li><a href="diagnostic.html#obj3">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
+                <circle cx="4" cy="8" r="2.2" />
+                <circle cx="12" cy="4" r="2.2" />
+                <circle cx="12" cy="12" r="2.2" />
+                <path d="M6 7L10 5M6 9L10 11" />
+              </svg>
+              3. Explorer les apps</a></li>
+          <li><a href="diagnostic.html#obj4">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M2 3h12v10H2z" />
+                <path d="M5 6h6M5 9h4" stroke-linecap="round" />
+              </svg>
+              4. Analyser les logs</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Administration Avancée</span>
+        <ul>
+          <li><a href="admin.html#sec">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4L8 1.5z" />
+              </svg>
+              Sécurité &amp; Hardening</a></li>
+          <li><a href="admin.html#pkg">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M8 1.5l5.5 3v7l-5.5 3-5.5-3v-7l5.5-3z" />
+                <path d="M8 1.5v13M2.5 4.5L8 8l5.5-3.5" />
+              </svg>
+              Packages &amp; Dépendances</a></li>
+          <li><a href="admin.html#systemd">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="5.5" />
+                <path d="M8 4.5V8l2.5 1.5" stroke-linecap="round" />
+              </svg>
+              Systemd Avancé</a></li>
+          <li><a href="admin.html#net">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
+                <circle cx="8" cy="8" r="1.8" fill="currentColor" />
+                <circle cx="2" cy="3" r="1.5" fill="currentColor" />
+                <circle cx="14" cy="3" r="1.5" fill="currentColor" />
+                <circle cx="2" cy="13" r="1.5" fill="currentColor" />
+                <circle cx="14" cy="13" r="1.5" fill="currentColor" />
+                <path d="M3.4 4.2L6 6.5M12.6 4.2L10 6.5M3.4 11.8L6 9.5M12.6 11.8L10 9.5" />
+              </svg>
+              Réseau Avancé</a></li>
+          <li><a href="admin.html#storage">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="1.5" y="3" width="13" height="3.5" rx="1" />
+                <rect x="1.5" y="8" width="13" height="3.5" rx="1" />
+                <circle cx="12" cy="4.8" r="0.9" fill="currentColor" />
+                <circle cx="12" cy="9.8" r="0.9" fill="currentColor" />
+              </svg>
+              Stockage &amp; FS</a></li>
+          <li><a href="admin.html#monitoring">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M1 10l3-4 3 2 2-5 3 3 2-2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Monitoring</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Maintenance &amp; Gestion</span>
+        <ul>
+          <li><a href="maintenance.html#maintenance">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="2" />
+                <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4" stroke-linecap="round" />
+              </svg>
+              Maintenance planifiée</a></li>
+          <li><a href="maintenance.html#gestion">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="2" y="2" width="12" height="12" rx="1" />
+                <path d="M5 6h6M5 9h4" stroke-linecap="round" />
+              </svg>
+              Gestion technique</a></li>
+          <li><a href="maintenance.html#backup">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M3 8a5 5 0 109.9-1H11" />
+                <path d="M11 4l1 3-3 .5" stroke-linecap="round" />
+              </svg>
+              Sauvegarde &amp; PRA/PCA</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Architecture &amp; Cloud</span>
+        <ul>
+          <li><a href="architecture.html#containers">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="1" y="5" width="14" height="8" rx="1" />
+                <path d="M4 5V3.5h8V5" />
+                <path d="M5 9h2M9 9h2" stroke-linecap="round" />
+              </svg>
+              Conteneurs &amp; K8s</a></li>
+          <li><a href="architecture.html#ha">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="6" />
+                <path d="M5 8l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Haute Disponibilité</a></li>
+          <li><a href="architecture.html#iac">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4L1.5 8 4 12M12 4l2.5 4-2.5 4M9 2.5l-2 11" stroke-linecap="round" />
+              </svg>
+              Automatisation &amp; IaC</a></li>
+          <li><a href="architecture.html#cloud">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
+                <path d="M13 9.5a2.5 2.5 0 10-3-4.3A3 3 0 003 8.5h9.5" />
+              </svg>
+              Cloud &amp; Hybride</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Performance &amp; Debug</span>
+        <ul>
+          <li><a href="performance.html#perf">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="3" />
+                <path d="M8 1v2M8 13v2M1 8h2M13 8h2" stroke-linecap="round" />
+              </svg>
+              Performance &amp; Tuning</a></li>
+          <li><a href="performance.html#debug">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="5.5" />
+                <path d="M8 5v3.5l2 1.5" stroke-linecap="round" />
+              </svg>
+              Dépannage Avancé</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Nouvelles Pratiques</span>
+        <ul>
+          <li><a href="pratiques.html#sre">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="5.5" />
+                <path d="M5 8l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              SRE &amp; Fiabilité</a></li>
+          <li><a href="pratiques.html#gitops">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="4" cy="4" r="2" />
+                <circle cx="12" cy="4" r="2" />
+                <circle cx="8" cy="12" r="2" />
+                <path d="M4 6v2a4 4 0 004 4M12 6v-1a2 2 0 00-2-2H6" />
+              </svg>
+              GitOps &amp; CI/CD</a></li>
+          <li><a href="pratiques.html#devsecops">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4L8 1.5z" />
+              </svg>
+              DevSecOps</a></li>
+          <li><a href="pratiques.html#platform">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="1" y="5" width="14" height="8" rx="1" />
+                <path d="M4 5V3.5h8V5" />
+              </svg>
+              Platform Engineering</a></li>
+          <li><a href="pratiques.html#finops">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <circle cx="8" cy="8" r="6" />
+                <path d="M8 4v8M6 6h3a1 1 0 010 2H6M6 8h4" stroke-linecap="round" />
+              </svg>
+              FinOps</a></li>
+          <li><a href="pratiques.html#observability">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M1 10l3-4 3 2 2-5 3 3 2-2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Observabilité avancée</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Kubernetes</span>
+        <ul>
+          <li><a href="kubernetes.html#cmds">Commandes kubectl</a></li>
+          <li><a href="kubernetes.html#yaml">Exemples YAML</a></li>
+          <li><a href="kubernetes.html#vs">K8s vs Docker</a></li>
+        </ul>
+      </div>
+      <div class="toc-group">
+        <span class="toc-label">Référence</span>
+        <ul>
+          <li><a href="reference.html#interview">Entretiens / Quiz</a></li>
+          <li><a href="reference.html#roadmap">Feuille de route</a></li>
+          <li><a href="ressources.html#linux">Ressources d'apprentissage</a></li>
+          <li><a href="ressources.html#labs">Labs pratiques</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ══ MAIN CONTENT ══ -->
+    <main>
+
+      <div class="breadcrumb">Docs <span>›</span> Référence <span>›</span> Ressources</div>
+      <h1 class="display-mega">Ressources d'apprentissage</h1>
+      <p class="subtitle">
+        Documentation officielle, tutoriels, vidéos, outils et labs, classés par thème.
+      </p>
+
+      <div class="page-meta">
+        <span class="page-meta-item">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 2.5h10v11H3z"/><path d="M5.5 5.5h5M5.5 8h5M5.5 10.5h3" stroke-linecap="round"/></svg>
+          36 ressources
+        </span>
+        <span class="page-meta-item">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1.5L2.5 4.5v4c0 3 2.2 5.6 5.5 6.5 3.3-.9 5.5-3.5 5.5-6.5v-4z"/></svg>
+          Tous niveaux
+        </span>
+        <span class="page-meta-item"><span class="badge">Mis à jour Novembre 2026</span></span>
+      </div>
+
+      <div class="page-banner-container">
+        <img src="img/ressources_hero.svg" alt="Ressources d'apprentissage" class="page-banner">
+      </div>
+
+      <div class="note info">
+        Les ressources ci-dessous sont organisées dans l'ordre d'utilisation recommandé. Le stagiaire est encouragé
+        à consulter la <strong>documentation officielle en priorité</strong> et à utiliser les tutoriels vidéo pour
+        comprendre les concepts globaux.
+        <div class="legend">
+          <span class="tag tag-blue">Doc officielle</span>
+          <span class="tag tag-green">Tutoriel</span>
+          <span class="tag tag-red">Vidéo</span>
+          <span class="tag tag-orange">Guide</span>
+          <span class="tag tag-purple">Outil</span>
+          <span class="tag tag-cyan">Lab</span>
+          <span class="tag tag-gray">Référence</span>
+        </div>
+      </div>
+
+      <section id="linux">
+        <div class="section-header">
+          <div class="section-icon green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          </div>
+          <h2>Linux et administration système</h2>
+        </div>
+        <p>Les bases indispensables avant d'aborder la conteneurisation : shell, système de fichiers, permissions, processus et services.</p>
+        <ol class="resource-list">
+          <li>
+            <a class="resource" href="https://linuxjourney.com/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Linux Journey</span>
+                <span class="resource-desc">Parcours progressif et gratuit : ligne de commande, permissions, processus, réseau.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-green">Tutoriel</span><span class="resource-domain">linuxjourney.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">The Linux Command Line (William Shotts)</span>
+                <span class="resource-desc">Livre gratuit de référence pour maîtriser le shell Bash.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-orange">Guide</span><span class="resource-domain">linuxcommand.org</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://wiki.archlinux.org/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">ArchWiki</span>
+                <span class="resource-desc">Documentation communautaire très détaillée, utile quelle que soit la distribution.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-gray">Référence</span><span class="resource-domain">wiki.archlinux.org</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://www.kernel.org/doc/html/latest/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Documentation du noyau Linux</span>
+                <span class="resource-desc">Référence officielle du kernel : sysctl, cgroups, ordonnanceur, mémoire.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-blue">Doc officielle</span><span class="resource-domain">kernel.org</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://www.brendangregg.com/linuxperf.html" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Linux Performance (Brendan Gregg)</span>
+                <span class="resource-desc">Outils et méthodologies d&#x27;analyse de performance Linux.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-gray">Référence</span><span class="resource-domain">brendangregg.com</span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section id="docker">
+        <div class="section-header">
+          <div class="section-icon blue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          </div>
+          <h2>Docker et conteneurisation</h2>
+        </div>
+        <p>Comprendre les images, les conteneurs, les volumes et les réseaux, puis écrire des Dockerfile sûrs et légers.</p>
+        <ol class="resource-list">
+          <li>
+            <a class="resource" href="https://docs.docker.com/get-started" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Docker - Get Started</span>
+                <span class="resource-desc">Documentation officielle : concepts, premier conteneur, Compose.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-blue">Doc officielle</span><span class="resource-domain">docs.docker.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://docker-curriculum.com/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Docker Curriculum</span>
+                <span class="resource-desc">Tutoriel complet et gratuit, de l&#x27;installation au déploiement.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-green">Tutoriel</span><span class="resource-domain">docker-curriculum.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://www.youtube.com/watch?v=3c-iBn73dDE" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">TechWorld with Nana - Docker Tutorial for Beginners</span>
+                <span class="resource-desc">Vue d&#x27;ensemble des concepts Docker en vidéo (YouTube).</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-red">Vidéo</span><span class="resource-domain">youtube.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://www.sysdig.com/learn-cloud-native/dockerfile-best-practices" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Bonnes pratiques de sécurité Dockerfile</span>
+                <span class="resource-desc">Image minimale, utilisateur non-root, multi-stage, gestion des secrets.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-orange">Guide</span><span class="resource-domain">sysdig.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://github.com/hadolint/hadolint" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Hadolint</span>
+                <span class="resource-desc">Linter Dockerfile : détecte les mauvaises pratiques avant le build.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">github.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://trivy.dev/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Trivy</span>
+                <span class="resource-desc">Scanner de vulnérabilités pour images, fichiers IaC et dépôts.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">trivy.dev</span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section id="kubernetes">
+        <div class="section-header">
+          <div class="section-icon cyan">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/></svg>
+          </div>
+          <h2>Kubernetes</h2>
+        </div>
+        <p>Déployer, exposer et superviser des applications conteneurisées, puis vérifier la qualité et la sécurité des manifests.</p>
+        <ol class="resource-list">
+          <li>
+            <a class="resource" href="https://kubernetes.io/docs/tutorials/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Tutoriels officiels Kubernetes</span>
+                <span class="resource-desc">Parcours pas à pas : déploiement, Services, configuration, stateful.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-blue">Doc officielle</span><span class="resource-domain">kubernetes.io</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://kubernetes.io/docs/reference/kubectl/quick-reference/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">kubectl Quick Reference</span>
+                <span class="resource-desc">Aide-mémoire officiel des commandes kubectl.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-gray">Référence</span><span class="resource-domain">kubernetes.io</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://www.youtube.com/watch?v=X48VuDVv0do" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">TechWorld with Nana - Kubernetes Tutorial for Beginners</span>
+                <span class="resource-desc">Architecture et objets Kubernetes expliqués en vidéo (YouTube).</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-red">Vidéo</span><span class="resource-domain">youtube.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://kube-score.com/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">kube-score</span>
+                <span class="resource-desc">Analyse statique des manifests et recommandations de fiabilité.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">kube-score.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://kubesec.io/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">kubesec</span>
+                <span class="resource-desc">Score de sécurité des ressources Kubernetes.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">kubesec.io</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://www.checkov.io/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Checkov</span>
+                <span class="resource-desc">Scan de l&#x27;Infrastructure as Code : Kubernetes, Terraform, Helm.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">checkov.io</span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section id="cicd">
+        <div class="section-header">
+          <div class="section-icon purple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M6 8.5v7M18 8.5a6 6 0 0 1-6 6H8.5"/></svg>
+          </div>
+          <h2>CI/CD et GitHub Actions</h2>
+        </div>
+        <p>Automatiser le build, les tests et le déploiement à chaque commit.</p>
+        <ol class="resource-list">
+          <li>
+            <a class="resource" href="https://learn.github.com/skills" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">GitHub Skills - GitHub Actions</span>
+                <span class="resource-desc">Labs interactifs officiels, réalisés directement dans un dépôt.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-cyan">Lab</span><span class="resource-domain">learn.github.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://docs.github.com/en/actions" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Documentation GitHub Actions</span>
+                <span class="resource-desc">Workflows, runners, secrets, environnements et réutilisation.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-blue">Doc officielle</span><span class="resource-domain">docs.github.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://www.youtube.com/watch?v=R8_veQiYBjI" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">TechWorld with Nana - GitHub Actions Tutorial</span>
+                <span class="resource-desc">Concepts de base et pipeline CI/CD avec Docker (YouTube).</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-red">Vidéo</span><span class="resource-domain">youtube.com</span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section id="devsecops">
+        <div class="section-header">
+          <div class="section-icon red">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h2>DevSecOps - Vision globale</h2>
+        </div>
+        <p>Intégrer la sécurité à chaque étape du cycle de vie, du code à la production.</p>
+        <ol class="resource-list">
+          <li>
+            <a class="resource" href="https://github.com/OWASP/DevSecOpsGuideline" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">OWASP DevSecOps Guideline</span>
+                <span class="resource-desc">Référentiel OWASP pour construire un pipeline DevSecOps.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-orange">Guide</span><span class="resource-domain">github.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://www.youtube.com/watch?v=cdb6ernButc" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">TechWorld with Nana - Complete DevSecOps Bootcamp</span>
+                <span class="resource-desc">Panorama complet des pratiques DevSecOps (YouTube).</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-red">Vidéo</span><span class="resource-domain">youtube.com</span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section id="scan">
+        <div class="section-header">
+          <div class="section-icon orange">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+          </div>
+          <h2>Outils de scan</h2>
+        </div>
+        <p>Analyse statique du code, détection de secrets et audit des dépendances, à brancher dans la CI.</p>
+        <ol class="resource-list">
+          <li>
+            <a class="resource" href="https://semgrep.dev/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Semgrep</span>
+                <span class="resource-desc">SAST multi-langage, avec un playground en ligne pour tester ses règles.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">semgrep.dev</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://github.com/gitleaks/gitleaks" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Gitleaks</span>
+                <span class="resource-desc">Détection de secrets (clés, tokens) dans le code et l&#x27;historique Git.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">github.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://owasp.org/www-project-dependency-check/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">OWASP Dependency-Check</span>
+                <span class="resource-desc">Identification des dépendances présentant des CVE connues.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">owasp.org</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://bandit.readthedocs.io/en/latest/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Bandit</span>
+                <span class="resource-desc">SAST dédié au code Python.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">bandit.readthedocs.io</span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section id="labs">
+        <div class="section-header">
+          <div class="section-icon green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/></svg>
+          </div>
+          <h2>Labs pratiques</h2>
+        </div>
+        <p>La pratique sur de vrais incidents est le meilleur moyen de consolider les acquis.</p>
+        <ol class="resource-list">
+          <li>
+            <a class="resource" href="https://sadservers.com/scenarios" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">SadServers</span>
+                <span class="resource-desc">Scénarios de dépannage Linux sur de vrais serveurs cassés, à réparer en temps limité.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-cyan">Lab</span><span class="resource-domain">sadservers.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://overthewire.org/wargames/bandit/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">OverTheWire - Bandit</span>
+                <span class="resource-desc">Wargame progressif pour maîtriser la ligne de commande et les bases de la sécurité.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-cyan">Lab</span><span class="resource-domain">overthewire.org</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://killercoda.com/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Killercoda</span>
+                <span class="resource-desc">Environnements Linux et Kubernetes interactifs dans le navigateur.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-cyan">Lab</span><span class="resource-domain">killercoda.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://roadmap.sh/devops" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">roadmap.sh - DevOps</span>
+                <span class="resource-desc">Feuille de route visuelle des compétences DevOps.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-orange">Guide</span><span class="resource-domain">roadmap.sh</span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section id="sre">
+        <div class="section-header">
+          <div class="section-icon blue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+          </div>
+          <h2>SRE et observabilité</h2>
+        </div>
+        <p>Mesurer la fiabilité (SLI, SLO, budgets d'erreur) et instrumenter les systèmes.</p>
+        <ol class="resource-list">
+          <li>
+            <a class="resource" href="https://sre.google/books/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Livres SRE de Google</span>
+                <span class="resource-desc">Site Reliability Engineering, The Site Reliability Workbook, gratuits en ligne.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-orange">Guide</span><span class="resource-domain">sre.google</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://prometheus.io/docs/introduction/overview/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Prometheus - Overview</span>
+                <span class="resource-desc">Modèle de données, PromQL et alerting.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-blue">Doc officielle</span><span class="resource-domain">prometheus.io</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://grafana.com/docs/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Documentation Grafana</span>
+                <span class="resource-desc">Tableaux de bord, sources de données et alertes.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-blue">Doc officielle</span><span class="resource-domain">grafana.com</span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section id="soc">
+        <div class="section-header">
+          <div class="section-icon purple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h2>SOC et sécurité défensive</h2>
+        </div>
+        <p>Premières ressources pour la future section SOC : détection, réponse à incident et supervision de sécurité.</p>
+        <ol class="resource-list">
+          <li>
+            <a class="resource" href="https://attack.mitre.org/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">MITRE ATT&amp;CK</span>
+                <span class="resource-desc">Base de connaissances des tactiques et techniques des attaquants.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-gray">Référence</span><span class="resource-domain">attack.mitre.org</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://github.com/SigmaHQ/sigma" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Sigma</span>
+                <span class="resource-desc">Format générique de règles de détection, convertible vers les principaux SIEM.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-purple">Outil</span><span class="resource-domain">github.com</span></span>
+            </a>
+          </li>
+          <li>
+            <a class="resource" href="https://documentation.wazuh.com/" target="_blank" rel="noopener">
+              <span class="resource-main">
+                <span class="resource-title">Documentation Wazuh</span>
+                <span class="resource-desc">SIEM / XDR open source : agents, règles, conformité.</span>
+              </span>
+              <span class="resource-meta"><span class="tag tag-blue">Doc officielle</span><span class="resource-domain">documentation.wazuh.com</span></span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+    </main>
+
+  </div><!-- /.layout -->
+
+  <footer>
+    Bastion - Handbook Sysadmin, SRE &amp; SOC - © 2026
+  </footer>
+
+  <button id="back-to-top" title="Retour en haut">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
+  </button>
+
+</body>
+
+</html>

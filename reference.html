@@ -3,10 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Référence &amp; Roadmap - Administration Serveur Linux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Référence &amp; Roadmap - Bastion</title>
   <meta name="description" content="Guide de référence et roadmap DevOps / SRE : questions d'entretien techniques avec réponses, et feuille de route d'apprentissage pas à pas.">
   <link class="variables" rel="stylesheet" href="css/main.css">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)">
+  <script>try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <script src="js/script.js" defer></script>
 </head>
 
@@ -31,9 +34,9 @@
           <line x1="6" y1="6" x2="6.01" y2="6"/>
           <line x1="6" y1="18" x2="6.01" y2="18"/>
         </svg>
-        <span class="header-logo-text">Linux<span>.SRE</span></span>
+        <span class="header-logo-text">Bastion<span>.</span></span>
       </a>
-      <span class="badge" style="margin-left: 8px;">Guide Complet</span>
+      <span class="badge">Sysadmin · SRE · SOC</span>
     </div>
 
     <ul class="header-nav">
@@ -42,6 +45,7 @@
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview" class="active">Quiz</a></li>
       <li><a href="reference.html#roadmap">Roadmap</a></li>
+      <li><a href="ressources.html">Ressources</a></li>
     </ul>
 
     <div class="header-right">
@@ -260,7 +264,7 @@
         </ul>
       </div>
       <div class="toc-group">
-        <span class="toc-label">Kubernetes ⎈</span>
+        <span class="toc-label">Kubernetes</span>
         <ul>
           <li><a href="kubernetes.html#cmds">Commandes kubectl</a></li>
           <li><a href="kubernetes.html#yaml">Exemples YAML</a></li>
@@ -272,6 +276,8 @@
         <ul>
           <li><a href="reference.html#interview">Entretiens / Quiz</a></li>
           <li><a href="reference.html#roadmap">Feuille de route</a></li>
+          <li><a href="ressources.html#linux">Ressources d'apprentissage</a></li>
+          <li><a href="ressources.html#labs">Labs pratiques</a></li>
         </ul>
       </div>
     </aside>
@@ -303,7 +309,7 @@
       </div>
 
       <div class="page-banner-container">
-        <img src="img/reference_hero.jpg" alt="Administration Serveur Linux - Référence &amp; Carrière" class="page-banner">
+        <img src="img/reference_hero.svg" alt="Référence &amp; Carrière" class="page-banner">
       </div>
 
       <!-- ══════════ SECTION: QUESTIONS D'ENTRETIEN ══════════ -->
@@ -423,52 +429,21 @@
         </div>
 
         <div class="card" style="margin-top: 30px; border-left: 3px solid var(--primary);">
-          <h4>🧪 Outils d'Entraînement, Quiz &amp; Roadmaps</h4>
+          <h4>Outils d'Entraînement, Quiz &amp; Roadmaps</h4>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><a href="https://roadmap.sh/devops" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Roadmap.sh/devops</a> — La feuille de route interactive de référence absolue pour l'écosystème DevOps / SRE.</li>
-            <li style="margin-bottom: 8px;"><a href="https://github.com/bregman-arie/devops-exercises" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">DevOps Exercises (GitHub)</a> — Plus de 2000 questions d'entretien corrigées couvrant Linux, Docker, K8s, Git, CI/CD, AWS, etc.</li>
-            <li style="margin-bottom: 8px;"><a href="https://sadservers.com/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">SadServers</a> — Scénarios réels de dépannage système interactifs pour tester vos réflexes d'administration en production.</li>
+            <li style="margin-bottom: 8px;"><a href="https://roadmap.sh/devops" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Roadmap.sh/devops</a> - La feuille de route interactive de référence absolue pour l'écosystème DevOps / SRE.</li>
+            <li style="margin-bottom: 8px;"><a href="https://github.com/bregman-arie/devops-exercises" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">DevOps Exercises (GitHub)</a> - Plus de 2000 questions d'entretien corrigées couvrant Linux, Docker, K8s, Git, CI/CD, AWS, etc.</li>
+            <li style="margin-bottom: 8px;"><a href="https://sadservers.com/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">SadServers</a> - Scénarios réels de dépannage système interactifs pour tester vos réflexes d'administration en production.</li>
           </ul>
         </div>
       </section>
 
     </main>
 
-    <!-- ══ SIDEBAR DROITE ══ -->
-    <aside class="right-sidebar">
-      <div class="toc-group">
-        <span class="toc-label">Sur cette page</span>
-        <ul id="on-this-page">
-          <li><a href="#interview">Questions Quiz</a></li>
-          <li><a href="#roadmap">Feuille de route</a></li>
-        </ul>
-      </div>
-      <div class="toc-group">
-        <span class="toc-label">Statut du Guide</span>
-        <div class="status-card">
-          <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~15 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Tout niveau</span></div>
-          <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
-        </div>
-      </div>
-      <div class="toc-group" style="margin-top:20px">
-        <span class="toc-label">Distributions couvertes</span>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px">
-          <span class="tag tag-orange">Ubuntu</span>
-          <span class="tag tag-red">RHEL</span>
-          <span class="tag tag-blue">Debian</span>
-          <span class="tag tag-cyan">Alpine</span>
-          <span class="tag tag-green">Rocky</span>
-          <span class="tag tag-gray">Arch</span>
-        </div>
-      </div>
-    </aside>
-
   </div><!-- /.layout -->
 
   <footer>
-    Tous types de serveurs, maintenance, SRE, GitOps, DevSecOps — © 2026
+    Bastion - Handbook Sysadmin, SRE &amp; SOC - © 2026
   </footer>
 
   <button id="back-to-top" title="Retour en haut">

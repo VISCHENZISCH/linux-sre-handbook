@@ -1,192 +1,167 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('aside:not(.right-sidebar) ul li a');
+  const body = document.body;
+  const html = document.documentElement;
+  const sections = document.querySelectorAll('main section[id]');
+  const navLinks = document.querySelectorAll('aside ul li a');
+  const headerLinks = document.querySelectorAll('.header-nav a');
   const progressBar = document.getElementById('progress-bar');
   const backToTopBtn = document.getElementById('back-to-top');
   const menuToggle = document.getElementById('menu-toggle');
   const themeToggle = document.getElementById('theme-toggle');
-  const body = document.body;
-  const html = document.documentElement;
 
-  // Determine current filename
-  let currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  if (currentPage === '') currentPage = 'index.html';
+  // Nom de page normalisé (compatible avec les URLs propres de Vercel : /admin == admin.html)
+  const normPage = (p) => {
+    const name = (p || '').split('/').pop().split('?')[0].replace(/\.html$/, '');
+    return name || 'index';
+  };
+  const currentPage = normPage(window.location.pathname);
 
-  // Theme Logic
+  // ── Thème ──────────────────────────────────────────
+  const storage = {
+    get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+  };
   const setTheme = (theme) => {
     html.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    storage.set('theme', theme);
   };
+  const getTheme = () =>
+    storage.get('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
-  const getTheme = () => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) return savedTheme;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  };
-
-  // Initial Theme Load
   setTheme(getTheme());
 
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = html.getAttribute('data-theme');
-      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-    });
-  }
-
-  // Mobile Menu Toggle
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      body.classList.toggle('menu-open');
-    });
-  }
-
-  // Close menu when clicking links
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      body.classList.remove('menu-open');
-    });
+  themeToggle?.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
 
-  // Close menu when clicking outside (on the overlay)
+  // ── Menu mobile (tiroir) ───────────────────────────
+  const closeMenu = () => body.classList.remove('menu-open');
+  menuToggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    body.classList.toggle('menu-open');
+  });
+  navLinks.forEach((link) => link.addEventListener('click', closeMenu));
+
+  // Clic en dehors / Échap : ferme les panneaux
   document.addEventListener('click', (e) => {
-    if (body.classList.contains('menu-open') &&
-      !e.target.closest('aside') &&
-      !e.target.closest('#menu-toggle')) {
-      body.classList.remove('menu-open');
+    if (body.classList.contains('menu-open') && !e.target.closest('aside') && !e.target.closest('#menu-toggle')) {
+      closeMenu();
     }
   });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { closeMenu(); }
+  });
+  window.matchMedia('(min-width: 961px)').addEventListener('change', (mq) => {
+    if (mq.matches) { closeMenu(); }
+  });
 
-  // Highlight active section on scroll (ScrollSpy)
-  const highlightSection = () => {
-    let current = '';
+  // ── Liens actifs de l'en-tête ──────────────────────
+  headerLinks.forEach((a) => {
+    const [page] = a.getAttribute('href').split('#');
+    a.classList.toggle('active', normPage(page) === currentPage);
+  });
+
+  // ── ScrollSpy + progression ────────────────────────
+  let activeLeft = null;
+  const update = () => {
+    let current = sections[0]?.id || '';
     const scrollPos = window.scrollY + 120;
-
-    sections.forEach(section => {
-      if (scrollPos >= section.offsetTop) {
-        current = section.getAttribute('id');
-      }
+    sections.forEach((section) => {
+      if (scrollPos >= section.offsetTop) current = section.id;
     });
 
-    // Fallback to first section if we are at the very top
-    if (window.scrollY < 50 && sections.length > 0) {
-      current = sections[0].getAttribute('id');
-    }
-
-    // Update left sidebar active links
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      const href = link.getAttribute('href');
-      const linkPage = href.includes('#') ? href.split('#')[0] : href;
-      const linkHash = href.includes('#') ? href.split('#')[1] : '';
-
-      // Normalize page names
-      const normCurrent = currentPage;
-      const normLink = linkPage === '' || !linkPage ? 'index.html' : linkPage;
-
-      if (normLink === normCurrent && linkHash === current) {
-        link.classList.add('active');
-        
-        // Auto scroll left sidebar to keep active link in view
-        const parentTOC = link.closest('.toc-group');
-        if (parentTOC) {
-          const label = parentTOC.querySelector('.toc-label');
-          if (label) label.style.color = 'var(--primary)';
-        }
-      } else {
-        // Reset label colors if not active
-        const parentTOC = link.closest('.toc-group');
-        if (parentTOC) {
-          const label = parentTOC.querySelector('.toc-label');
-          const hasActiveLink = parentTOC.querySelector('ul li a.active');
-          if (label && !hasActiveLink) {
-            label.style.color = 'var(--text-light)';
+    navLinks.forEach((link) => {
+      const [page, hash = ''] = link.getAttribute('href').split('#');
+      const isActive = normPage(page) === currentPage && hash === current;
+      link.classList.toggle('active', isActive);
+      if (isActive && activeLeft !== link) {
+        activeLeft = link;
+        const aside = link.closest('aside');
+        if (aside && window.innerWidth > 960) {
+          const r = link.getBoundingClientRect();
+          const ar = aside.getBoundingClientRect();
+          if (r.top < ar.top + 40 || r.bottom > ar.bottom - 40) {
+            aside.scrollTo({ top: link.offsetTop - aside.clientHeight / 3, behavior: 'smooth' });
           }
         }
       }
     });
-
-    // Update right sidebar active links
-    const rightLinks = document.querySelectorAll('.right-sidebar #on-this-page li a');
-    rightLinks.forEach(link => {
-      link.classList.remove('active');
-      const href = link.getAttribute('href');
-      const linkHash = href.startsWith('#') ? href.substring(1) : href.split('#')[1];
-      if (linkHash === current) {
-        link.classList.add('active');
-      }
+    document.querySelectorAll('aside .toc-group').forEach((g) => {
+      const label = g.querySelector('.toc-label');
+      if (label) label.style.color = g.querySelector('a.active') ? 'var(--text)' : '';
     });
 
-    // Update progress bar
-    const winScroll = document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-    if (progressBar) progressBar.style.width = scrolled + "%";
-
-    // Show/Hide back to top button
-    if (winScroll > 400) {
-      if (backToTopBtn) backToTopBtn.classList.add('visible');
-    } else {
-      if (backToTopBtn) backToTopBtn.classList.remove('visible');
-    }
+    const winScroll = html.scrollTop || body.scrollTop;
+    const height = html.scrollHeight - html.clientHeight;
+    if (progressBar) progressBar.style.width = (height > 0 ? (winScroll / height) * 100 : 0) + '%';
+    backToTopBtn?.classList.toggle('visible', winScroll > 400);
   };
 
-  window.addEventListener('scroll', highlightSection);
-  highlightSection();
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
 
-  // Smooth scroll to top
-  if (backToTopBtn) {
-    backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-  }
+  backToTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  // Enhanced Copy button for code blocks
-  const preBlocks = document.querySelectorAll('pre');
-  preBlocks.forEach(pre => {
-    if (pre.closest('.cursor-agent-container')) return;
-    
+  // ── Tableaux : enveloppe défilante sur petit écran ─
+  document.querySelectorAll('main table').forEach((table) => {
+    if (table.parentElement.classList.contains('table-wrapper')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'table-wrapper';
+    table.parentNode.insertBefore(wrap, table);
+    wrap.appendChild(table);
+  });
+
+  // ── Bouton copier sur les blocs de code ────────────
+  document.querySelectorAll('pre').forEach((pre) => {
     const code = pre.querySelector('code');
     if (!code) return;
 
     const btn = document.createElement('button');
+    btn.type = 'button';
     btn.className = 'copy-btn';
     btn.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      <span>Copier</span>
-    `;
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span>Copier</span>`;
     pre.appendChild(btn);
 
     btn.addEventListener('click', () => {
-      const textToCopy = code.innerText.replace(/^\s*admin@srv:~\$\s*/gm, '');
-      navigator.clipboard.writeText(textToCopy).then(() => {
+      // On retire les invites de commande (.c-prompt) avant de copier
+      const clone = code.cloneNode(true);
+      clone.querySelectorAll('.c-prompt').forEach((p) => {
+        const next = p.nextSibling;
+        if (next && next.nodeType === 3) next.textContent = next.textContent.replace(/^ /, '');
+        p.remove();
+      });
+      const text = clone.textContent.replace(/^[ \t]*admin@srv:~\$\s*/gm, '');
+      navigator.clipboard?.writeText(text).then(() => {
         const span = btn.querySelector('span');
         btn.classList.add('copied');
-        span.innerText = 'Copié !';
-        setTimeout(() => {
-          btn.classList.remove('copied');
-          span.innerText = 'Copier';
-        }, 2000);
+        span.textContent = 'Copié';
+        setTimeout(() => { btn.classList.remove('copied'); span.textContent = 'Copier'; }, 1800);
       });
     });
   });
 
-  // Intersection Observer for fade-in effect on sections
-  const observerOptions = { threshold: 0.1 };
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
+  // ── Apparition douce des sections ──────────────────
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
 
-  sections.forEach(section => {
-    section.classList.add('fade-in-section');
-    observer.observe(section);
-  });
+    sections.forEach((section) => {
+      section.classList.add('fade-in-section');
+      observer.observe(section);
+    });
+  }
 });

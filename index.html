@@ -3,11 +3,14 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Introduction &amp; Guide - Administration Serveur Linux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Introduction &amp; Guide - Bastion</title>
   <meta name="description"
     content="Guide complet d'administration serveur Linux : types de serveurs, maintenance, sécurité, DevOps, Kubernetes, SRE, nouvelles pratiques.">
   <link rel="stylesheet" href="css/main.css">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)">
+  <script>try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <script src="js/script.js" defer></script>
 </head>
 
@@ -32,9 +35,9 @@
           <line x1="6" y1="6" x2="6.01" y2="6"/>
           <line x1="6" y1="18" x2="6.01" y2="18"/>
         </svg>
-        <span class="header-logo-text">Linux<span>.SRE</span></span>
+        <span class="header-logo-text">Bastion<span>.</span></span>
       </a>
-      <span class="badge" style="margin-left: 8px;">Guide Complet</span>
+      <span class="badge">Sysadmin · SRE · SOC</span>
     </div>
 
     <ul class="header-nav">
@@ -43,6 +46,7 @@
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview">Quiz</a></li>
       <li><a href="reference.html#roadmap">Roadmap</a></li>
+      <li><a href="ressources.html">Ressources</a></li>
     </ul>
 
     <div class="header-right">
@@ -261,7 +265,7 @@
         </ul>
       </div>
       <div class="toc-group">
-        <span class="toc-label">Kubernetes ⎈</span>
+        <span class="toc-label">Kubernetes</span>
         <ul>
           <li><a href="kubernetes.html#cmds">Commandes kubectl</a></li>
           <li><a href="kubernetes.html#yaml">Exemples YAML</a></li>
@@ -273,6 +277,8 @@
         <ul>
           <li><a href="reference.html#interview">Entretiens / Quiz</a></li>
           <li><a href="reference.html#roadmap">Feuille de route</a></li>
+          <li><a href="ressources.html#linux">Ressources d'apprentissage</a></li>
+          <li><a href="ressources.html#labs">Labs pratiques</a></li>
         </ul>
       </div>
     </aside>
@@ -304,7 +310,7 @@
       </div>
 
       <div class="page-banner-container">
-        <img src="img/index_hero.jpg" alt="Administration Serveur Linux - Introduction" class="page-banner">
+        <img src="img/index_hero.svg" alt="Introduction" class="page-banner">
       </div>
 
       <!-- ══════════ SECTION: OBJECTIF ══════════ -->
@@ -323,11 +329,11 @@
           production, en passant par la maintenance quotidienne, la gestion technique et les pratiques DevOps modernes.
         <div class="note info">
           Les commandes sont divisées en catégories :<br><br>
-          <span class="tag tag-blue">Bleu</span> — La <strong>finalité du serveur</strong> : ports exposés et services
+          <span class="tag tag-blue">Bleu</span> - La <strong>finalité du serveur</strong> : ports exposés et services
           actifs.<br>
-          <span class="tag tag-red">Rouge</span> — Le <strong>niveau de saturation</strong> des ressources
+          <span class="tag tag-red">Rouge</span> - Le <strong>niveau de saturation</strong> des ressources
           matérielles.<br>
-          <span class="tag tag-green">Vert</span> — Les <strong>erreurs potentielles</strong> et événements critiques.
+          <span class="tag tag-green">Vert</span> - Les <strong>erreurs potentielles</strong> et événements critiques.
         </div>
       </section>
 
@@ -480,51 +486,19 @@
             Lectures de Référence Recommandées
           </h4>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><strong>Site Reliability Engineering (Google)</strong> — <em>Betsy Beyer et al.</em> — Référence absolue du SRE. <a href="https://sre.google/sre-book/table-of-contents" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Consulter en ligne (Gratuit)</a></li>
-            <li style="margin-bottom: 8px;"><strong>UNIX and Linux System Administration Handbook</strong> — <em>Nemeth et al.</em> — La bible indispensable pour tout administrateur Linux.</li>
-            <li style="margin-bottom: 8px;"><strong>The Linux Command Line</strong> — <em>William Shotts</em> — Le guide de référence pour maîtriser le shell. <a href="http://linuxcommand.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Site officiel</a></li>
+            <li style="margin-bottom: 8px;"><strong>Site Reliability Engineering (Google)</strong> - <em>Betsy Beyer et al.</em> - Référence absolue du SRE. <a href="https://sre.google/sre-book/table-of-contents" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Consulter en ligne (Gratuit)</a></li>
+            <li style="margin-bottom: 8px;"><strong>UNIX and Linux System Administration Handbook</strong> - <em>Nemeth et al.</em> - La bible indispensable pour tout administrateur Linux.</li>
+            <li style="margin-bottom: 8px;"><strong>The Linux Command Line</strong> - <em>William Shotts</em> - Le guide de référence pour maîtriser le shell. <a href="http://linuxcommand.org/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Site officiel</a></li>
           </ul>
         </div>
       </section>
 
     </main>
 
-    <!-- ══ SIDEBAR DROITE ══ -->
-    <aside class="right-sidebar">
-      <div class="toc-group">
-        <span class="toc-label">Sur cette page</span>
-        <ul id="on-this-page">
-          <li><a href="#purpose" class="active">Objectif général</a></li>
-          <li><a href="#server-types">Types de serveurs</a></li>
-          <li><a href="#sre-intro">Introduction SRE</a></li>
-        </ul>
-      </div>
-      <div class="toc-group">
-        <span class="toc-label">Statut du Guide</span>
-        <div class="status-card">
-          <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~7 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Fondamentaux</span></div>
-          <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
-        </div>
-      </div>
-      <div class="toc-group" style="margin-top:20px">
-        <span class="toc-label">Distributions couvertes</span>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px">
-          <span class="tag tag-orange">Ubuntu</span>
-          <span class="tag tag-red">RHEL</span>
-          <span class="tag tag-blue">Debian</span>
-          <span class="tag tag-cyan">Alpine</span>
-          <span class="tag tag-green">Rocky</span>
-          <span class="tag tag-gray">Arch</span>
-        </div>
-      </div>
-    </aside>
-
   </div><!-- /.layout -->
 
   <footer>
-    Tous types de serveurs, maintenance, SRE, GitOps, DevSecOps — © 2026
+    Bastion - Handbook Sysadmin, SRE &amp; SOC - © 2026
   </footer>
 
   <button id="back-to-top" title="Retour en haut">

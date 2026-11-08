@@ -3,10 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Architecture &amp; Cloud - Administration Serveur Linux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Architecture &amp; Cloud - Bastion</title>
   <meta name="description" content="Guide d'architecture haute disponibilité et cloud : conteneurs Docker, docker-compose, Keepalived, clustering, Ansible, Terraform et liaisons cloud hybrides.">
   <link rel="stylesheet" href="css/main.css">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)">
+  <script>try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <script src="js/script.js" defer></script>
 </head>
 
@@ -31,9 +34,9 @@
           <line x1="6" y1="6" x2="6.01" y2="6"/>
           <line x1="6" y1="18" x2="6.01" y2="18"/>
         </svg>
-        <span class="header-logo-text">Linux<span>.SRE</span></span>
+        <span class="header-logo-text">Bastion<span>.</span></span>
       </a>
-      <span class="badge" style="margin-left: 8px;">Guide Complet</span>
+      <span class="badge">Sysadmin · SRE · SOC</span>
     </div>
 
     <ul class="header-nav">
@@ -42,6 +45,7 @@
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview">Quiz</a></li>
       <li><a href="reference.html#roadmap">Roadmap</a></li>
+      <li><a href="ressources.html">Ressources</a></li>
     </ul>
 
     <div class="header-right">
@@ -260,7 +264,7 @@
         </ul>
       </div>
       <div class="toc-group">
-        <span class="toc-label">Kubernetes ⎈</span>
+        <span class="toc-label">Kubernetes</span>
         <ul>
           <li><a href="kubernetes.html#cmds">Commandes kubectl</a></li>
           <li><a href="kubernetes.html#yaml">Exemples YAML</a></li>
@@ -272,6 +276,8 @@
         <ul>
           <li><a href="reference.html#interview">Entretiens / Quiz</a></li>
           <li><a href="reference.html#roadmap">Feuille de route</a></li>
+          <li><a href="ressources.html#linux">Ressources d'apprentissage</a></li>
+          <li><a href="ressources.html#labs">Labs pratiques</a></li>
         </ul>
       </div>
     </aside>
@@ -303,7 +309,7 @@
       </div>
 
       <div class="page-banner-container">
-        <img src="img/architecture_hero.jpg" alt="Administration Serveur Linux - Architecture &amp; Cloud" class="page-banner">
+        <img src="img/architecture_hero.svg" alt="Architecture &amp; Cloud" class="page-banner">
       </div>
 
       <!-- ══════════ SECTION: CONTENEURS ══════════ -->
@@ -356,7 +362,7 @@
 <span class="y-key">volumes:</span>
   <span class="y-key">pgdata:</span></code></pre>
 
-        <h3 style="margin-top: 30px;">🐳 Dockerfile de Production Optimisé &amp; Sécurisé</h3>
+        <h3 style="margin-top: 30px;">Dockerfile de Production Optimisé &amp; Sécurisé</h3>
         <p>Ce patron de conception applique les meilleures pratiques de sécurité et d'optimisation (multi-stage builds, utilisateur non-root, cache de dépendances, et réduction des couches d'image) :</p>
         
         <pre class="yaml"><code><span class="y-comment"># ── ÉTAPE 1 : CONSTRUIRE (Builder) ──</span>
@@ -467,10 +473,10 @@
         </div>
 
         <div class="callout info">
-          <strong>Ordre recommandé :</strong> Packer construit l'image ➜ Terraform provisionne les instances ➜ Ansible finalise la configuration applicative.
+          <strong>Ordre recommandé :</strong> Packer construit l'image → Terraform provisionne les instances → Ansible finalise la configuration applicative.
         </div>
 
-        <h3 style="margin-top: 30px;">⚙️ Configuration SRE de Terraform : Remote Backend &amp; Lock</h3>
+        <h3 style="margin-top: 30px;">Configuration SRE de Terraform : Remote Backend &amp; Lock</h3>
         <p>Pour collaborer de manière sécurisée en équipe sans risquer d'écraser des ressources ou de corrompre le fichier d'état (<code>terraform.tfstate</code>), utilisez un backend distant sécurisé. Cette configuration utilise la **nouvelle fonctionnalité native de locking S3** de Terraform 1.10+ (sans nécessiter de table DynamoDB externe) :</p>
         
         <pre class="yaml"><code><span class="y-comment"># backend.tf</span>
@@ -529,55 +535,22 @@
         </div>
 
         <div class="card" style="margin-top: 24px; border-left: 3px solid var(--primary);">
-          <h4>☁️ Références d'Architecture &amp; IaC</h4>
+          <h4>Références d'Architecture &amp; IaC</h4>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><a href="https://aws.amazon.com/architecture/well-architected/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">AWS Well-Architected Framework</a> — Piliers de fiabilité, performance, sécurité et optimisation des coûts.</li>
-            <li style="margin-bottom: 8px;"><a href="https://registry.terraform.io/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Terraform Registry</a> — Catalogue de modules réutilisables et providers IaC validés par HashiCorp.</li>
-            <li style="margin-bottom: 8px;"><strong>Designing Distributed Systems</strong> — <em>Brendan Burns</em> — Patrons de conception et architectures pour les systèmes distribués cloud-native.</li>
-            <li style="margin-bottom: 8px;"><strong>Infrastructure as Code</strong> — <em>Kief Morris</em> — Guide de référence absolue pour les concepts Terraform et Ansible.</li>
+            <li style="margin-bottom: 8px;"><a href="https://aws.amazon.com/architecture/well-architected/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">AWS Well-Architected Framework</a> - Piliers de fiabilité, performance, sécurité et optimisation des coûts.</li>
+            <li style="margin-bottom: 8px;"><a href="https://registry.terraform.io/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Terraform Registry</a> - Catalogue de modules réutilisables et providers IaC validés par HashiCorp.</li>
+            <li style="margin-bottom: 8px;"><strong>Designing Distributed Systems</strong> - <em>Brendan Burns</em> - Patrons de conception et architectures pour les systèmes distribués cloud-native.</li>
+            <li style="margin-bottom: 8px;"><strong>Infrastructure as Code</strong> - <em>Kief Morris</em> - Guide de référence absolue pour les concepts Terraform et Ansible.</li>
           </ul>
         </div>
       </section>
 
     </main>
 
-    <!-- ══ SIDEBAR DROITE ══ -->
-    <aside class="right-sidebar">
-      <div class="toc-group">
-        <span class="toc-label">Sur cette page</span>
-        <ul id="on-this-page">
-          <li><a href="#containers">Docker &amp; Conteneurs</a></li>
-          <li><a href="#ha">Haute Disponibilité</a></li>
-          <li><a href="#iac">Automatisation &amp; IaC</a></li>
-          <li><a href="#cloud">Cloud &amp; Hybride</a></li>
-        </ul>
-      </div>
-      <div class="toc-group">
-        <span class="toc-label">Statut du Guide</span>
-        <div class="status-card">
-          <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~12 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Architecte</span></div>
-          <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
-        </div>
-      </div>
-      <div class="toc-group" style="margin-top:20px">
-        <span class="toc-label">Distributions couvertes</span>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px">
-          <span class="tag tag-orange">Ubuntu</span>
-          <span class="tag tag-red">RHEL</span>
-          <span class="tag tag-blue">Debian</span>
-          <span class="tag tag-cyan">Alpine</span>
-          <span class="tag tag-green">Rocky</span>
-          <span class="tag tag-gray">Arch</span>
-        </div>
-      </div>
-    </aside>
-
   </div><!-- /.layout -->
 
   <footer>
-    Tous types de serveurs, maintenance, SRE, GitOps, DevSecOps — © 2026
+    Bastion - Handbook Sysadmin, SRE &amp; SOC - © 2026
   </footer>
 
   <button id="back-to-top" title="Retour en haut">

@@ -3,10 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administration Avancée - Administration Serveur Linux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Administration Avancée - Bastion</title>
   <meta name="description" content="Guide d'administration serveur Linux avancée : durcissement de sécurité SSH, UFW, gestion des paquets, systemd sandboxing, réseau TCP, stockage LVM, et monitoring.">
   <link rel="stylesheet" href="css/main.css">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)">
+  <script>try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <script src="js/script.js" defer></script>
 </head>
 
@@ -31,9 +34,9 @@
           <line x1="6" y1="6" x2="6.01" y2="6"/>
           <line x1="6" y1="18" x2="6.01" y2="18"/>
         </svg>
-        <span class="header-logo-text">Linux<span>.SRE</span></span>
+        <span class="header-logo-text">Bastion<span>.</span></span>
       </a>
-      <span class="badge" style="margin-left: 8px;">Guide Complet</span>
+      <span class="badge">Sysadmin · SRE · SOC</span>
     </div>
 
     <ul class="header-nav">
@@ -42,6 +45,7 @@
       <li><a href="kubernetes.html#cmds">Kubernetes</a></li>
       <li><a href="reference.html#interview">Quiz</a></li>
       <li><a href="reference.html#roadmap">Roadmap</a></li>
+      <li><a href="ressources.html">Ressources</a></li>
     </ul>
 
     <div class="header-right">
@@ -260,7 +264,7 @@
         </ul>
       </div>
       <div class="toc-group">
-        <span class="toc-label">Kubernetes ⎈</span>
+        <span class="toc-label">Kubernetes</span>
         <ul>
           <li><a href="kubernetes.html#cmds">Commandes kubectl</a></li>
           <li><a href="kubernetes.html#yaml">Exemples YAML</a></li>
@@ -272,6 +276,8 @@
         <ul>
           <li><a href="reference.html#interview">Entretiens / Quiz</a></li>
           <li><a href="reference.html#roadmap">Feuille de route</a></li>
+          <li><a href="ressources.html#linux">Ressources d'apprentissage</a></li>
+          <li><a href="ressources.html#labs">Labs pratiques</a></li>
         </ul>
       </div>
     </aside>
@@ -303,7 +309,7 @@
       </div>
 
       <div class="page-banner-container">
-        <img src="img/admin_hero.jpg" alt="Administration Serveur Linux - Administration Avancée" class="page-banner">
+        <img src="img/admin_hero.svg" alt="Administration Avancée" class="page-banner">
       </div>
 
       <!-- ══════════ SECTION: SÉCURITÉ ══════════ -->
@@ -348,10 +354,10 @@ AllowUsers <span class="c-string">deployer admin</span></code></pre>
             Standards &amp; Outils de Hardening
           </h4>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><a href="https://www.cisecurity.org/cis-benchmarks" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">CIS Benchmarks</a> — Normes de durcissement universelles reconnues par l'industrie (Linux, K8s, Cloud).</li>
-            <li style="margin-bottom: 8px;"><a href="https://cisofy.com/lynis/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Lynis Audit Tool</a> — Outil open source d'audit de sécurité et de durcissement Linux.</li>
-            <li style="margin-bottom: 8px;"><a href="https://madaidans-insecurities.github.io/guides/linux-hardening.html" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Linux Hardening Guide</a> — Guide technique complet sur la protection du noyau.</li>
-            <li style="margin-bottom: 8px;"><strong>NIST SP 800-123</strong> — Recommandations fédérales américaines pour la sécurité des serveurs généraux.</li>
+            <li style="margin-bottom: 8px;"><a href="https://www.cisecurity.org/cis-benchmarks" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">CIS Benchmarks</a> - Normes de durcissement universelles reconnues par l'industrie (Linux, K8s, Cloud).</li>
+            <li style="margin-bottom: 8px;"><a href="https://cisofy.com/lynis/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Lynis Audit Tool</a> - Outil open source d'audit de sécurité et de durcissement Linux.</li>
+            <li style="margin-bottom: 8px;"><a href="https://madaidans-insecurities.github.io/guides/linux-hardening.html" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Linux Hardening Guide</a> - Guide technique complet sur la protection du noyau.</li>
+            <li style="margin-bottom: 8px;"><strong>NIST SP 800-123</strong> - Recommandations fédérales américaines pour la sécurité des serveurs généraux.</li>
           </ul>
         </div>
       </section>
@@ -483,54 +489,19 @@ AllowUsers <span class="c-string">deployer admin</span></code></pre>
             Ressources de Monitoring &amp; Observabilité
           </h4>
           <ul style="margin-left: 20px; margin-top: 10px; list-style-type: square;">
-            <li style="margin-bottom: 8px;"><a href="https://prometheus.io/docs/introduction/overview/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Prometheus Docs</a> — L'outil de référence pour l'alerte et la collecte de métriques temporelles.</li>
-            <li style="margin-bottom: 8px;"><a href="https://grafana.com/docs/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Grafana Docs</a> — Guide de création de dashboards d'observabilité haute performance.</li>
-            <li style="margin-bottom: 8px;"><a href="https://opentelemetry.io/docs/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">OpenTelemetry</a> — Le standard unifié pour les traces, métriques et logs applicatifs.</li>
+            <li style="margin-bottom: 8px;"><a href="https://prometheus.io/docs/introduction/overview/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Prometheus Docs</a> - L'outil de référence pour l'alerte et la collecte de métriques temporelles.</li>
+            <li style="margin-bottom: 8px;"><a href="https://grafana.com/docs/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Grafana Docs</a> - Guide de création de dashboards d'observabilité haute performance.</li>
+            <li style="margin-bottom: 8px;"><a href="https://opentelemetry.io/docs/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">OpenTelemetry</a> - Le standard unifié pour les traces, métriques et logs applicatifs.</li>
           </ul>
         </div>
       </section>
 
     </main>
 
-    <!-- ══ SIDEBAR DROITE ══ -->
-    <aside class="right-sidebar">
-      <div class="toc-group">
-        <span class="toc-label">Sur cette page</span>
-        <ul id="on-this-page">
-          <li><a href="#sec">Sécurité &amp; Hardening</a></li>
-          <li><a href="#pkg">Packages &amp; Dépendances</a></li>
-          <li><a href="#systemd">Systemd Avancé</a></li>
-          <li><a href="#net">Réseau Avancé</a></li>
-          <li><a href="#storage">Stockage &amp; FS</a></li>
-          <li><a href="#monitoring">Monitoring</a></li>
-        </ul>
-      </div>
-      <div class="toc-group">
-        <span class="toc-label">Statut du Guide</span>
-        <div class="status-card">
-          <div class="status-item"><span class="status-label">Version</span><span class="status-value">2.0.0</span></div>
-          <div class="status-item"><span class="status-label">Lecture</span><span class="status-value">~15 min</span></div>
-          <div class="status-item"><span class="status-label">Niveau</span><span class="status-value">Ingénieur SRE</span></div>
-          <div class="status-item"><span class="status-label">Mise à jour</span><span class="status-value">Mai 2026</span></div>
-        </div>
-      </div>
-      <div class="toc-group" style="margin-top:20px">
-        <span class="toc-label">Distributions couvertes</span>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px">
-          <span class="tag tag-orange">Ubuntu</span>
-          <span class="tag tag-red">RHEL</span>
-          <span class="tag tag-blue">Debian</span>
-          <span class="tag tag-cyan">Alpine</span>
-          <span class="tag tag-green">Rocky</span>
-          <span class="tag tag-gray">Arch</span>
-        </div>
-      </div>
-    </aside>
-
   </div><!-- /.layout -->
 
   <footer>
-    Tous types de serveurs, maintenance, SRE, GitOps, DevSecOps — © 2026
+    Bastion - Handbook Sysadmin, SRE &amp; SOC - © 2026
   </footer>
 
   <button id="back-to-top" title="Retour en haut">
